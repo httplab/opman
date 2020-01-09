@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-describe Opman do
+describe Op do
   it "is true" do
-    expect(Opman).to be_a(Module)
+    expect(Op).to be_a(Module)
   end
 end

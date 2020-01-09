@@ -107,4 +107,11 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+  config.before(:suite) do
+    system('./install_dummy.sh')
+  end
+
+  config.after(:suite) do
+    system('./cleanup_dummy.sh')
+  end
 end

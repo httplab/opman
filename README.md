@@ -1,4 +1,4 @@
-# Opman
+# Op
 Short description and motivation.
 
 ## Usage

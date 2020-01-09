@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Opman
+module Op
   class Railtie < ::Rails::Railtie
   end
 end
