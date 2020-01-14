@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class OperationState
+# rubocop:disable Rails/ApplicationRecord
+class OperationState < ActiveRecord::Base
   enum emitter_type: { system: 0, user: 1 }
-  enum state: { pending: 0, in_progress: 1, finished: 2, failed: 3 }
+  enum state: { in_progress: 0, finished: 1, failed: 2 }
 end
+# rubocop:enable Rails/ApplicationRecord

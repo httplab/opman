@@ -8,6 +8,7 @@
 !/log/.keep
 !/tmp/.keep
 /coverage
+/spec/dummy/log/*
 
 # Ignore uploaded files in development.
 .byebug_history

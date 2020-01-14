@@ -6,18 +6,6 @@ AllCops:
 
 require: rubocop-rails
 
-Style/AsciiComments:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
-
-Style/StringLiterals:
-  Enabled: false
-
-Style/BlockComments:
-  Enabled: false
-
 Metrics/BlockLength:
   Max: 50
 
@@ -29,3 +17,18 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
   Max: 50
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false

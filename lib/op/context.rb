@@ -10,7 +10,7 @@ module Op
       raise 'Not implemented'
     end
 
-    def to_json
+    def to_json(_opts)
       JSON(as_json)
     end
 

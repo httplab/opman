@@ -108,10 +108,13 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
   config.before(:suite) do
-    system('./install_dummy.sh')
+    unless ENV['SKIP_CREATE_SUITE'] == 'true'
+      system('./install_dummy.sh')
+      require './spec/dummy/app/models/operation_state'
+    end
   end
 
   config.after(:suite) do
-    system('./cleanup_dummy.sh')
+    system('./cleanup_dummy.sh') unless ENV['SKIP_CLEAN_SUITE'] == 'true'
   end
 end
