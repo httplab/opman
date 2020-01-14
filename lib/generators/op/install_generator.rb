@@ -20,6 +20,12 @@ module Op
       copy_file(src, dst)
     end
 
+    def copy_operation_context_model
+      src = 'operation_context_model.rb'
+      dst = "app/models/operation_context.rb"
+      copy_file(src, dst)
+    end
+
     def migration_version
       "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
     end

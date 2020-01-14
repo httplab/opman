@@ -21,6 +21,9 @@ Metrics/MethodLength:
 Naming/MethodParameterName:
   Enabled: false
 
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
+
 Style/AsciiComments:
   Enabled: false
 

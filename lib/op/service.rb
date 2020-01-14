@@ -25,12 +25,23 @@ module Op
       service.perform(*args)
     end
 
+    # :nocov:
     def perform(*_args)
       raise 'Not implemented yet'
     end
+    # :nocov:
 
     def operation_name
       self.class.operation_name
+    end
+
+    def op(target_class, *args)
+      target_class.new(context, self).call(*args)
+    end
+
+    # Use it if you need to do something immediately.
+    def op!(target_class, *args)
+      op(target_class, *args)
     end
   end
 end
