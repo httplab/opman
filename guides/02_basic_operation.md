@@ -66,8 +66,8 @@ class Foo < Op::Operation
 end
 ```
 
-There are several important differences from service class
+There are several important differences from service class. Since operation is entry point to application business logic it
 
-1. Operation CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
-2. Operation CANNOT call another operation.
+1. CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
+2. CANNOT call another operation.
 2. Service class CANNOT call an operation.
