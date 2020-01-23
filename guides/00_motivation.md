@@ -65,6 +65,32 @@ in the context of the executable process. For example, if in the context of regi
 mailing lists, it would be great to automatically get log entries about this (even if the developer forgot to 
 explicitly use logger).
 
+### No way to audit changes
+
+There is no way to trace the history of a change in one or another entity. The user edits the billing plan and 
+it’s quite difficult for us to establish when it was done, what values were before editing, to see the list of 
+versions. It would be great to be able to get a history of changes in the properties of entities.
+Sending messages, launching workers, interacting with external APIs from open (incomplete) transactions. For example, we add money to the user's account, send an alert about this, after the message is sent, an error occurs and rollback transactions occur. As a result, the user thinks that he has money in his account, but in fact there is none. It would be great to have a tool that would allow transparently delaying communication with the outside world until the transaction is successfully completed.
+
+## Data consistency issues
+
+### Forgotten transactions
+
+Often there are no transactions, as a result, data is not stored atomically, data integrity is violated. 
+It would be great to have instruments that simplify transactional support at the operation definition level. 
+For example, declaring an operation as transactional would allow us to not worry about transactions within 
+nested service classes calls during execution of the operation.
+
+### Interaction with external worlds from open transactions
+
+Often there are no transactions, as a result, data is not stored atomically, data integrity is violated. 
+It would be great to have tools that simplify transactional support at the operation definition level. 
+For example, declaring an operation as transactional might help us to not worry about transactions within 
+nested sservice classes calls during operation execution.
+
+
+
+
 
 
 
