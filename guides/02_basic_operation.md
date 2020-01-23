@@ -206,7 +206,7 @@ operation.call
 ## Operation names chaining
 
 Next important thing to know is operation names chaining. As we mentioned before, each operation and each service class
-involved to operation execute must have operation name. Due to method `op()` all calls are bound into a tree and it means
+involved to operation execution must have operation name. Due to method `op()` all calls are bound into a tree and it means
 that each participant can know its place inside calls tree.
 
 The easiest way to get this information is to use `#current_calls_chain` method.
