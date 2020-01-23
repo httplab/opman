@@ -159,3 +159,51 @@ end
 
 Do not execute service classes, Sidekiq workers, do not use mailers and do not publish messages without using `op()`
 method to get instance of corresponding class. 
+
+PLEASE NOTE that method `op()` is available not only directly inside operation but inside all involved service classes too. 
+We collect and manage calls tree using method `op()`.
+
+## Operation context propagation
+
+When we use method `op()` to call service classes (and other parties) we automatically get operation context 
+inside nested calls.
+
+
+```ruby
+# app/operations/baz.rb
+class Baz < Op::Operation
+  def perform
+    op(Bar).call
+  end
+end
+
+# app/services/foo.rb
+class Bar < Op::Service
+  def perform
+    op(Foo).call
+  end
+end
+
+# app/services/foo.rb
+class Foo < Op::Service
+  def perform
+    # Get user from context and print email
+    puts context.user.email # => "alice@domain.com"
+  end
+end
+
+# some code
+
+user = User.new('alice@domain.com')
+ctx = OperationContext.new(user)
+
+operation = Baz.new(ctx)
+
+# Context is popagated down to call tree and available even inside `Bar#perform`
+operation.call
+```
+
+## Operation names chaining
+
+
+## Operation state
