@@ -17,6 +17,7 @@ You can call service class and get result using method `.call`.
 
 ```ruby
 # ...somewhere in your code...
+
 result = SayHello.call("Alice")
 
 if result.success?
@@ -49,6 +50,7 @@ And check result
 
 ```ruby
 # ...somewhere in your code...
+
 result = SayHello.call("alice@example.com")
 
 if result.fail?
@@ -78,6 +80,7 @@ class NotifyBySMS < Op::Service
       @notified_count = notified_count
       @skipped_count = skipped_count 
       
+      # Let's say that we always have successfull result
       super(true)
     end  
   end
@@ -103,6 +106,7 @@ In application code you can check custom result similar as you can check regular
 
 ```ruby
 # ...somewhere in your code...
+
 result = NotifyBySMS.call
 puts "#{result.notified_count} users notified successfully, #{result.skipped_count} skipped"
 # => "28 users notified successfully, 0 skipped" 
