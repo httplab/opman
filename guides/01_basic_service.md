@@ -108,6 +108,9 @@ In application code you can check custom result similar as you can check regular
 # ...somewhere in your code...
 
 result = NotifyBySMS.call
+
+return if result.fail?
+
 puts "#{result.notified_count} users notified successfully, #{result.skipped_count} skipped"
 # => "28 users notified successfully, 0 skipped" 
 ```
