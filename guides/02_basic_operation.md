@@ -70,4 +70,4 @@ There are several important differences from service class. Since operation is e
 
 1. CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
 2. CANNOT call another operation.
-2. Service class CANNOT call an operation.
+2. CANNOT BE called from inside service class.
