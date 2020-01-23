@@ -1,5 +1,7 @@
 # Operation
 
+[Operation context]
+
 Operation is an entry point to application business logic. Operations define what and how and application does. 
 All actions initiated by external world which change state of system should be defined as operations. All actions
 state and progress of which have to be tracked should be defined as operations. 
@@ -263,10 +265,11 @@ end
 
 # some code
 
+# Prepare context
 user = User.find_by(id: 123, email: 'alice@domain.com')
 ctx = OperationContext.new(user)
 
-# Call operation it should be executed successfully.
+# Call operation. It should be executed successfully
 Foo.call(ctx, name: 'Bob')
 
 # Get operation state
@@ -284,4 +287,11 @@ state.error           # => nil
 state.error_backtrace # => nil
 state.finished_at     # => 2020-01-23 16:54:38 +0300
 ```
+
+As you can see from example, operation state contains all information related to context and arguments which we used to run operation.
+
+PLEASE NOTE! Since we serialize operation arguments to JSON to persist them into OperationState please use only types which
+can be automatically serialized and deserialized from JSON as arguments of operation.
+
+Operation state records is pretty usefull to get list of actions which user performed in the system.
 
