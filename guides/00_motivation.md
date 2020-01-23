@@ -3,11 +3,11 @@
 ## Motivation
 
 During the life cycle of almost every Ruby on Rails application I was dealing with, 
-there were a number of typical problems that made it difficult to investigate and 
+there were a number of typical issues that made it difficult to investigate and 
 fix problems and develop new features. These problems can be divided into three categories: 
-code organization and style problems, system control problems, and data consistency problems.
+code organization and style issues, system control issues, and data consistency issues.
 
-## Code organization and style problems
+## Code organization and style issues
 
 ### Differently designed service classes
 
@@ -34,5 +34,37 @@ In controllers, we usually have current_user, current_organization, but this dat
 service classes below the call stack. In sidekick workers, MK consumers, access to this data is completely
 difficult. As a result, changes are occurring in the system and we have no way to determine which user
 was the initiator of these changes and with which parameters and context they happened.
+
+## System control issues
+
+### Missing user actions log
+
+It is difficult to understand when and what kind of actions the user initiated. As a result, the system changes 
+state, but we do not know exactly how, why and who initiated the changes. A typical problem is the consequences 
+of editing billing settings. The user claims that he did not change anything, but the invoices were generated 
+at the wrong time with the wrong amount.
+
+### Workers and MQ consumers are black holes
+
+We don’t know (or getting this information is very difficult) what exactly happens inside the sidekick, what 
+exactly do the message queue consumers do. It would be great to be able to get information about which processes 
+are running in the background, which are completed (successfully, or not), by whom and with what parameters were 
+started.
+
+### No way to get process execution progress
+
+It is not clear at what stage is the process that takes a long time to complete. As a result, if the developer 
+did not prepare logging, the only way to find out if the process is working or not is top tool. It would be 
+great to have a simple tool that would allow us to track the progress of the operation.
+
+### Lack of logging
+
+Logging is often absent, or insufficient to obtain the necessary information during debugging. It would be great 
+to automate logging, to make a tool that would allow you to track the sequence of calls (ideally with parameters) 
+in the context of the executable process. For example, if in the context of registering a new user we add him to the 
+mailing lists, it would be great to automatically get log entries about this (even if the developer forgot to 
+explicitly use logger).
+
+
 
 
