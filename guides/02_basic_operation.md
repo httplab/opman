@@ -121,3 +121,39 @@ class NotifyUser < Op::Service
   # some code
 end
 ```
+
+## op() method
+
+Operations framework defines factory method `op()`. We have to use it to instantiate entities to be called during
+operation execution.
+
+```ruby
+# app/services/bar.rb
+class Bar < Op::Service
+  self.operation_name = 'bar'
+
+  # some code
+end
+
+# app/operations/foo.rb
+class Foo < Op::Operation
+  self.operation_name = 'foo'
+  
+  def perform
+    # Good. Use factory method op() to get instance of Bar service class and then call it.
+    result = op(Bar).call
+    
+    # some dode
+    
+    # Bad. Just call Bar service class. It is working but this call lost all Operations Framework magic, 
+    # context will be missing inside this call, audit and logging will be lost as well as other things 
+    # like locks, transactional execution and so on.
+    result = Bar.call
+    
+    # some code
+  end
+end
+```
+
+Do not execute service classes, Sidekiq workers, do not use mailers and do not publish messages without using `op()`
+method to get instance of corresponding class. 
