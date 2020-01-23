@@ -88,8 +88,14 @@ It would be great to have tools that simplify transactional support at the opera
 For example, declaring an operation as transactional might help us to not worry about transactions within 
 nested sservice classes calls during operation execution.
 
+### Forgotten locks
 
+An obvious problem. We work with the same resource from several threads (processes) forget about locking and turn resource into an inconsistent state. It would be great to be able to set blocking conditions at the operation definition level and make it impossible to simultaneously launch several operations that perform actions with the same resource.
 
+### Running multiple singletones in parallel
+
+Some operations such as data synchronization in its nature do not imply the possibility of parallel launch. Such 
+operations must be declared accordingly, which will automatically prevent run multiple instances.
 
 
 
