@@ -253,9 +253,35 @@ Possibility to get current_calls_chain is pretty useful for debugging, logging a
 
 When you call operation it automatically creates record in database with information about operation state, context and parameters. Using operation state records we always are able to get information about operations which were executed and about operations which are currently in progress. We automatically track errors and save them into operation state it means that in case if operation fails we always are able to get this error and backtrace from operation_states table.
 
-```
+```ruby
 
+# app/operations/foo.rb
+class Foo < Op::Operation
+  def perform(name:)
+  end
+end
 
+# some code
 
+user = User.find_by(id: 123, email: 'alice@domain.com')
+ctx = OperationContext.new(user)
+
+# Call operation it should be executed successfully.
+Foo.call(ctx, name: 'Bob')
+
+# Get operation state
+state = OperationState.where(operation_name: 'foo', emitter_type: 'user', emitter_id: user.id).first
+
+# Inspect record with execution state of our operation
+state.name            # => "foo"
+state.context         # => { "user_id" => 123, "user_email" => "alice@domain.com" }
+state.args            # => { "name" => "Bob" }
+state.emitter_type    # => "user"
+state.emitter_id      # => 123
+state.state           # => "success"
+state.progress_pct    # => 100
+state.error           # => nil
+state.error_backtrace # => nil
+state.finished_at     # => 2020-01-23 16:54:38 +0300
 ```
 
