@@ -177,7 +177,7 @@ class Baz < Op::Operation
   end
 end
 
-# app/services/foo.rb
+# app/services/bar.rb
 class Bar < Op::Service
   def perform
     op(Foo).call
@@ -199,11 +199,53 @@ ctx = OperationContext.new(user)
 
 operation = Baz.new(ctx)
 
-# Context is popagated down to call tree and available even inside `Bar#perform`
+# Context is popagated down to call tree and available even inside Bar#perform
 operation.call
 ```
 
 ## Operation names chaining
 
+Next important thing to know is operation names chaining. As we mentioned before, each operation and each service class
+involved to operation execute must have operation name. Due to method `op()` all calls are bound into a tree and it means
+that each participant can know its place inside calls tree.
+
+The easiest way to get this information is to use `#current_calls_chain` method.
+
+```ruby
+# app/operations/baz.rb
+class Baz < Op::Operation
+  def perform
+    puts(current_calls_chain)
+    op(Foo).call
+  end
+end
+
+# app/services/foo.rb
+class Foo < Op::Service
+  def perform
+    puts(current_calls_chain)
+    op(Bar).call
+  end
+end
+
+# app/services/bar.rb
+class Bar < Op::Service
+  def perform
+    puts(current_calls_chain)
+  end
+end
+
+
+# some code
+
+operation = Baz.new(ctx)
+operation.call
+# This call will print something like
+# baz
+# baz.foo
+# baz.foo.bar
+```
+
+Possibility to get current_calls_chain is pretty useful for debugging, logging and audit.
 
 ## Operation state
