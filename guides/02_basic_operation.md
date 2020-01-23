@@ -70,7 +70,8 @@ There are several important differences from service class. Since operation is e
 
 1. CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
 2. CANNOT call another operation.
-2. CANNOT BE called from inside service class.
+3. CANNOT BE called from inside service class.
+4. When you call an operation USE ONLY data types which can be CORRECTLY SERIALIZED and DESERIALIZED from JSON.
 
 It is easy to execute operation
 
@@ -249,3 +250,12 @@ operation.call
 Possibility to get current_calls_chain is pretty useful for debugging, logging and audit.
 
 ## Operation state
+
+When you call operation it automatically creates record in database with information about operation state, context and parameters. Using operation state records we always are able to get information about operations which were executed and about operations which are currently in progress. We automatically track errors and save them into operation state it means that in case if operation fails we always are able to get this error and backtrace from operation_states table.
+
+```
+
+
+
+```
+
