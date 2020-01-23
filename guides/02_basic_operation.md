@@ -1,6 +1,12 @@
 # Operation
 
-[Operation context]
+* [Operation context](#operation-context)
+* [Howto define and run operation](#howto-define-and-run-operation)
+* [Operation name](#operation-name)
+* [op() method](#op-method)
+* [Operation context propagation](#operation-context-propagation)
+* [Operation names chaining](#operation-names-chaining)
+* [Operation state](#operation-state)
 
 Operation is an entry point to application business logic. Operations define what and how and application does. 
 All actions initiated by external world which change state of system should be defined as operations. All actions
