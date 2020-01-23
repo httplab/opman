@@ -56,6 +56,7 @@ end
 We have to put operations under `app/operations` directory. Technically operation inherits service class. It means that operation has the same interface as service class. Operation should define method `.perform` and return `Op::Result` similar to service class. 
 
 ```ruby
+# app/operations/foo.rb
 class Foo < Op::Operation
   self.operation_name = 'foo'
 
@@ -65,3 +66,8 @@ class Foo < Op::Operation
 end
 ```
 
+There are several important differences from service class
+
+1. Operation CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
+2. Operation CANNOT call another operation.
+2. Service class CANNOT call an operation.
