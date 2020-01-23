@@ -48,3 +48,20 @@ class OperationContext < Op::Context
   end
 end
 ```
+
+`emitter_type` and `emitter_id` define who is initiator of execution of operation. It might be `:user`, `:system` or someone else.
+
+## Howto define and run operation
+
+We have to put operations under `app/operations` directory. Technically operation inherits service class. It means that operation has the same interface as service class. Operation should define method `.perform` and return `Op::Result` similar to service class. 
+
+```ruby
+class Foo < Op::Operation
+  self.operation_name = 'foo'
+
+  def perform(name, greeting:)
+    Op::Result.new(true, "#{greeting}, #{name}!")
+  end
+end
+```
+
