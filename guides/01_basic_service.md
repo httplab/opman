@@ -1,7 +1,6 @@
 # Service class
 
-Service class is thing which does minimal amount of work and follows SRP principle. You can call service classes everywhere in
-application. Service class follows simple interface and always must return result.
+Service class is thing which does minimal amount of work and follows SRP principle. You can call service classes everywhere in application. Service class follows simple interface and always must return result.
 
 ```ruby
 # /app/services/say_hello.rb
@@ -9,7 +8,7 @@ class SayHello < Op::Service
   def perform(name)
     # First parameter of result is boolean specifies if call is successfull or not. Second parameter is 
     # value, return whatever you want.
-    Result.new(true, "Hello, #{name}!")
+    Op::Result.new(true, "Hello, #{name}!")
   end
 end
 ```
@@ -38,7 +37,7 @@ class SayHello < Op::Service
     user = User.find_by(email: email)
     
     # Return result with false as the first parameter and error as the second.
-    return Result.new(false, :user_not_found) unless user
+    return Op::Result.new(false, :user_not_found) unless user
 
     # Do something if user found    
   end
@@ -59,7 +58,52 @@ if result.fail?
 end
 ```
 
-Service class does not handle errors. You need to handle errors himself but keep im mind 
-that it is not recommended to catch errors inside service classes without subsequent re raising them. 
+## Raising and rescuing errors
+
+Service class does not deal with errors. You need to raise and rescue errors by himself. Do it whatever you 
+want but keep in mind that it is not recommended to catch errors inside service classes without subsequent 
+re raising them. 
 
 ## Custom result
+
+You can define and return custom result
+
+```ruby
+# /app/services/notify_by_sms.rb
+class NotifyBySMS < Op::Service
+  class Result < Op::Result
+    attr_reader :notified_count, :skipped_count
+    
+    def initialize(notified_count, skipped_count)
+      @notified_count = notified_count
+      @skipped_count = skipped_count 
+      
+      super(true)
+    end  
+  end
+
+  def perform
+    notified_count = 0
+    skipped_count = 0
+    
+    User.find_each do |user|
+      if notify(user)
+        notified_count += 1
+      else
+        skipped_count += 1
+      end
+    end
+    
+    Result.new(notified_count, skipped_count)
+  end
+end
+```
+
+In application code you can check custom result similar as you can check regular result
+
+```ruby
+# ...somewhere in your code...
+result = NotifyBySMS.call
+puts "#{result.notified_count} users notified successfully, #{result.skipped_count} skipped"
+# => "28 users notified successfully, 0 skipped" 
+```
