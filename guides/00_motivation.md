@@ -1,9 +1,10 @@
 # Operations Framework
 
-[Motivation](#motivation)
-[Code organization and style issues](#code-organization-and-style-issues)
-[System control issues](#system-control-issues)
-[Data consistency issues](#data-consistency-issues)
+* [Motivation](#motivation)
+* [Code organization and style issues](#code-organization-and-style-issues)
+* [System control issues](#system-control-issues)
+* [Data consistency issues](#data-consistency-issues)
+* [Solution](#solution)
 
 ## Motivation
 
@@ -102,6 +103,11 @@ An obvious problem. We work with the same resource from several threads (process
 Some operations such as data synchronization in its nature do not imply the possibility of parallel launch. Such 
 operations must be declared accordingly, which will automatically prevent run multiple instances.
 
+## Solution
 
+Solution is to make Operations Framework which can help us to avoid described mistakes and issues. 
+Development includes three milestones
 
-
+1. Basic infrastructure, operations, unification of service classes, logging, contexts, tracking status of execution.
+2. Transactional, blocking, tracking progress.
+3. Audit
