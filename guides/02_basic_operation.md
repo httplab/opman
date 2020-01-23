@@ -98,4 +98,26 @@ result = operation.call('Alice', greeting: 'Hello')
 # some code
 ```
 
+## Operation name
 
+Operation name is pretty important. It helps us to identify events related to operation execution in logs and audit records. 
+
+```ruby
+# app/operations/foo.rb
+class Foo < Op::Operation
+  self.operation_name = 'foo'
+  
+  # some code
+end
+```
+
+If service class can be executed inside operation you must define its `operation_name` too
+
+```ruby
+# app/operations/foo.rb
+class NotifyUser < Op::Service
+  self.operation_name = 'notify_user'
+  
+  # some code
+end
+```
