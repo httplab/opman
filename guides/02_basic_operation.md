@@ -8,7 +8,7 @@
 * [Operation names chaining](#operation-names-chaining)
 * [Operation state](#operation-state)
 
-Operation is an entry point to application business logic. Operations define what and how and application does. 
+Operation is an entry point to application business logic. Operations define what and how application does. 
 All actions initiated by external world which change state of system should be defined as operations. All actions
 state and progress of which have to be tracked should be defined as operations. 
 
