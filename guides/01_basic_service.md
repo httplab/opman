@@ -62,7 +62,7 @@ end
 
 ## Raising and rescuing errors
 
-Service class does not deal with errors. You need to raise and rescue errors by himself. Do it whatever you 
+Service class does not deal with errors. You need to raise and rescue errors by your own. Do it whatever you 
 want but keep in mind that it is not recommended to catch errors inside service classes without subsequent 
 re raising them. 
 
