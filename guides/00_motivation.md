@@ -1,5 +1,10 @@
 # Operations Framework
 
+[Motivation](#motivation)
+[Code organization and style issues](#code-organization-and-style-issues)
+[System control issues](#system-control-issues)
+[Data consistency issues](#data-consistency-issues)
+
 ## Motivation
 
 During the life cycle of almost every Ruby on Rails application I was dealing with, 
