@@ -125,7 +125,9 @@ end
 ## op() method
 
 Operations framework defines factory method `op()`. We have to use it to instantiate entities to be called during
-operation execution.
+operation execution. This magic method is the glue which connects all entities involved to operation execution into
+solid structure, propagate context, takes care on nested transactions and so on. We will provide more details in
+following guides.
 
 ```ruby
 # app/services/bar.rb
