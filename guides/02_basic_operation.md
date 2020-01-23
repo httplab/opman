@@ -71,3 +71,31 @@ There are several important differences from service class. Since operation is e
 1. CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
 2. CANNOT call another operation.
 2. CANNOT BE called from inside service class.
+
+It is easy to execute operation
+
+```ruby
+# ...somewhere in controller...
+
+user = User.find(params[:user_id])
+ctx = OperationContext.new(user) 
+
+# just use .call shortcut
+result = Foo.call(ctx, 'Alice', greeting: 'Hello')
+if result.success?
+  puts result.value # => "Hello, Alice!"
+  
+  # do something else here
+end
+```
+
+Instead of use `.call` you can use get instance and call it
+
+```ruby
+operation = Foo.new(ctx)
+result = operation.call('Alice', greeting: 'Hello')
+
+# some code
+```
+
+
