@@ -18,6 +18,8 @@ module Op
 
       prepare_state(args)
       result = perform(*args)
+      ensure_result(result)
+
       success_state
 
       result
@@ -41,6 +43,13 @@ module Op
 
     def success_state
       @state.update!(state: 'success', finished_at: Time.current, progress_pct: 100)
+    end
+
+    def ensure_result(result)
+      err = <<~MSG
+        Operation must return "Op::Result" or inherited (Recieved "#{result.class}")
+      MSG
+      raise err unless result.class <= Op::Result
     end
 
     def fail_state(err)
