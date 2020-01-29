@@ -46,9 +46,7 @@ module Op
     end
 
     def ensure_result(result)
-      err = <<~MSG
-        Operation must return "Op::Result" or inherited (Recieved "#{result.class}")
-      MSG
+      err = %(Operation must return "Op::Result" or inherited (Recieved "#{result.class}"))
       raise err unless result.class <= Op::Result
     end
 

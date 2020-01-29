@@ -28,9 +28,7 @@ module OperationResultSpec
       let(:result) { 1 }
 
       it 'raise error' do
-        msg = <<~MSG
-          Operation must return "Op::Result" or inherited (Recieved "Integer")
-        MSG
+        msg = %(Operation must return "Op::Result" or inherited (Recieved "Integer"))
         expect { do_call }.to raise_error(RuntimeError, msg)
       end
     end
