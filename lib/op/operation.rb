@@ -18,6 +18,8 @@ module Op
 
       prepare_state(args)
       result = perform(*args)
+      validate_result(result)
+
       success_state
 
       result
@@ -41,6 +43,11 @@ module Op
 
     def success_state
       @state.update!(state: 'success', finished_at: Time.current, progress_pct: 100)
+    end
+
+    def validate_result(result)
+      err = "Operation must return \"Op::Result\" or nested(Recieved \"#{result.class}\")."
+      raise err unless result.class <= Op::Result
     end
 
     def fail_state(err)
