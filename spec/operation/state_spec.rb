@@ -22,7 +22,6 @@ describe 'Tracking Operation State' do
 
   it 'creates operation state before execute #perform' do
     allow(operation).to receive(:success_state).and_return(true)
-    allow(operation).to receive(:perform).and_return(true)
 
     do_call
 
