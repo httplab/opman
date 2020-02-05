@@ -3,8 +3,8 @@
 module Op
   class Result
     attr_reader :success
-    attr_reader :value
-    attr_reader :error
+    attr_accessor :value
+    attr_accessor :error
 
     def initialize(success, value_or_error = nil)
       @success = success

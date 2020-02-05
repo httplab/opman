@@ -1,0 +1,56 @@
+# frozen_string_literal: true
+
+module Op
+  class Result
+    class ValidationFail < Result
+      ValidationError = Struct.new(:source, :error, :details, :value) do
+        def to_s
+          "#{source} is #{error} it #{details}"
+        end
+
+        def as_json
+          to_h
+        end
+
+        def to_json(_)
+          JSON(to_h)
+        end
+      end
+
+      def initialize(value)
+        super(false)
+
+        self.value = value
+        self.error = :validation
+
+        gather_am_errors
+      end
+
+      def add(src, error, error_details, value = nil)
+        details << ValidationError.new(src.to_sym, error.to_sym, error_details, value)
+      end
+
+      def details
+        @details ||= []
+      end
+
+      private
+
+      def gather_am_errors
+        return unless value.is_a?(ActiveModel::Validations)
+
+        value.errors.details.each do |k, errors|
+          err_src = k.to_sym
+
+          errors.each_with_index do |error, idx|
+            err_kind = error[:error]
+            err_val = error[:value][err_src]
+            err_details = value.errors[err_src][idx]
+
+            add(err_src, err_kind, err_details, err_val)
+          end
+        end
+      end
+    end
+  end
+end

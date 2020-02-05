@@ -8,7 +8,10 @@ module Op
     attr_reader :parent
 
     class << self
-      attr_reader :operation_name
+      def operation_name(new_name = nil)
+        return @operation_name unless new_name
+        self.operation_name = new_name
+      end
 
       def operation_name=(name)
         check_operation_name(self, name)
