@@ -15,6 +15,9 @@ Layout/MultilineHashBraceLayout:
   Enabled: true
   EnforcedStyle: symmetrical
 
+Layout/LineLength:
+  Max: 120
+
 Metrics/AbcSize:
   Max: 25
 
@@ -23,9 +26,6 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 150
-
-Metrics/LineLength:
-  Max: 120
 
 Metrics/MethodLength:
   Max: 50
