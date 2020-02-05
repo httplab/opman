@@ -82,6 +82,7 @@ module Op
 
     def discard_state
       return unless @state
+
       @state.delete
     end
 
@@ -101,7 +102,7 @@ module Op
                      error_backtrace: err.backtrace.join("\n"))
     end
 
-    def fail_state_with_result(result)
+    def fail_state_with_result(_result)
       return unless @state
     end
   end

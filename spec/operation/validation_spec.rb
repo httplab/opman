@@ -34,7 +34,14 @@ module OperationValidtionSpec
 
       expect(result).to be_fail
       expect(result.error).to eq :validation
-      expect(result.details.as_json).to eq [{ source: :email, error: :invalid, details: 'is invalid', value: 'wrong.email' }]
+      expect(result.details.as_json).to eq [
+        {
+          source: :email,
+          error: :invalid,
+          details: 'is invalid',
+          value: 'wrong.email'
+        }
+      ]
 
       # Because of discard_state_on_fail
       expect(OperationState.count).to eq 0

@@ -10,6 +10,7 @@ module Op
     class << self
       def operation_name(new_name = nil)
         return @operation_name unless new_name
+
         self.operation_name = new_name
       end
 
