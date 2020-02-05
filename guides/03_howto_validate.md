@@ -27,3 +27,24 @@ class SaveClient < Op::Operation
 end
 ```
 
+You can inspect validation errors from result
+
+```ruby
+operation = SaveClient.new(context)
+result = operation.call('wrong.email')
+
+result.fail? # => true
+result.error # => :validation
+
+error = result.details[0]
+error.source  # => :email
+error.error   # => :invalid
+error.details # => "is invalid"
+error.value   # => "wrong.email"
+```
+
+You also can easily get ActiveModel::Validation errors (in case if you target supports it)
+
+```ruby
+result.value.errors
+```
