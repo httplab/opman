@@ -3,7 +3,7 @@
 Sometimes it requires to validate user input and perform operation only if input is valid. It can be achieved by using
 steps.
 
-```
+```ruby
 # app/operations/save_client.rb
 class SaveClient < Op::Operation
   operation_name :save_client
