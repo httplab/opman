@@ -48,3 +48,5 @@ You also can easily get ActiveModel::Validation errors (in case if you target su
 ```ruby
 result.value.errors
 ```
+
+Use `discard_state_on_fail: true` when you define validation step to avoid storing operation state to DB in case if validation failed and operation cannot be performed. It can be usefull for example for `LoginUser` operation if you do not want to spam `operations_states` table with failed logins. 
