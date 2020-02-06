@@ -20,8 +20,8 @@ SET default_with_oids = false;
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -38,11 +38,12 @@ CREATE TABLE public.operation_states (
     emitter_id bigint,
     state integer DEFAULT 0 NOT NULL,
     progress_pct integer DEFAULT 0 NOT NULL,
+    error_kind integer DEFAULT 0,
     error_text character varying,
     error_backtrace character varying,
     finished_at timestamp without time zone,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -112,6 +113,6 @@ ALTER TABLE ONLY public.schema_migrations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20200113125902');
+('20200206092609');
 
 

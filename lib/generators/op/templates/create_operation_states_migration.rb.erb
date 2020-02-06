@@ -14,6 +14,7 @@ class OpCreateOperationStates < ActiveRecord::Migration<%= migration_version %>
     t.integer  :state, null: false, default: 0
     t.integer  :progress_pct, null: false, default: 0
 
+    t.integer  :error_kind, default: 0
     t.string   :error_text
     t.string   :error_backtrace
 

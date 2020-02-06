@@ -30,7 +30,7 @@ module OperationAuthorizeSpec
     end
   end
 
-  describe 'Validation step' do
+  describe 'Authorization step' do
     let(:user) { OpenStruct.new(id: 66, email: 'evil.intruder@foobar.com') }
     let(:operation_context) { OperationContext.new(user) }
     let(:operation) { DeleteDocument.new(operation_context) }
@@ -45,6 +45,8 @@ module OperationAuthorizeSpec
       expect(OperationState.count).to eq 1
       opstate = OperationState.first
       expect(opstate).to be_failed
+      expect(opstate).to be_authorization
+      expect(opstate.error_text).to eq 'Current user is not author of the document'
     end
   end
 end

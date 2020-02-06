@@ -5,7 +5,9 @@ module Op
     class ValidationFail < Result
       ValidationError = Struct.new(:source, :error, :details, :value) do
         def to_s
-          "#{source} is #{error} it #{details}"
+          msg = "#{source} is #{error} it #{details}"
+          msg += " (given \"#{value}\")" if value
+          msg
         end
 
         def as_json
@@ -32,6 +34,10 @@ module Op
 
       def details
         @details ||= []
+      end
+
+      def message
+        details.map(&:to_s).join(', ')
       end
 
       private

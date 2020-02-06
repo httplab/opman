@@ -84,6 +84,7 @@ module Op
       return unless @state
 
       @state.delete
+      @state = nil
     end
 
     def success_state
@@ -98,12 +99,15 @@ module Op
     def fail_state_with_error(err)
       return unless @state
 
-      @state.update!(state: 'failed', finished_at: Time.current, error_text: err.message,
-                     error_backtrace: err.backtrace.join("\n"))
+      @state.update!(state: 'failed', finished_at: Time.current, error_kind: :exception,
+        error_text: err.message, error_backtrace: err.backtrace.join("\n"))
     end
 
-    def fail_state_with_result(_result)
+    def fail_state_with_result(result)
       return unless @state
+
+      @state.update!(state: 'failed', finished_at: Time.current, error_kind: result.error.to_sym,
+        error_text: result.message)
     end
   end
 end
