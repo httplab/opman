@@ -26,7 +26,7 @@ module OperationAuthorizeSpec
     def authorize(_document_id)
       return if context.user == document.author
 
-      Op::Result::Unauthorized.new('Current user is not author of the document')
+      Op::Result::Forbidden.new('Current user is not author of the document')
     end
   end
 

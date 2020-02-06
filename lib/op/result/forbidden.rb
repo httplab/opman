@@ -2,7 +2,7 @@
 
 module Op
   class Result
-    class Unauthorized < Result
+    class Forbidden < Result
       def initialize(message)
         super(false)
 
