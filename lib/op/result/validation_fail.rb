@@ -50,7 +50,7 @@ module Op
 
           errors.each_with_index do |error, idx|
             err_kind = error[:error]
-            err_val = error[:value][err_src]
+            err_val = error[:value][err_src] if error[:value]
             err_details = value.errors[err_src][idx]
 
             add(err_src, err_kind, err_details, err_val)
