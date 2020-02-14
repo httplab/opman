@@ -52,7 +52,7 @@ class DeleteDocument < Op::Operation
 end
 ```
 
-Why not to use regular ActiveRecord transactions? We can not prohibit regular transactions it still work, 
+Why not to use regular ActiveRecord transactions? We can not prohibit to use regular transactions it still work, 
 but we need more control. We need to know when transaction starts whether rollback happens or not and so on to 
 handle sending emails, running workers and publishing messages from inside #perform. 
 
