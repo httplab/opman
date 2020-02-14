@@ -23,5 +23,11 @@ module Op
     def fail?
       !success?
     end
+
+    def message
+      return 'Succcess' if success?
+
+      "Failure, #{error}"
+    end
   end
 end

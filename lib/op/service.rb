@@ -18,6 +18,14 @@ module Op
         check_operation_name(self, name)
         @operation_name = name
       end
+
+      def transactional
+        @transactional = true
+      end
+
+      def transactional?
+        @transactional == true
+      end
     end
 
     def initialize(context = nil, parent = nil)
@@ -31,12 +39,20 @@ module Op
     end
 
     def call(*args)
-      perform(*args)
+      if perform_in_transaction?
+        perform_in_transaction(*args)
+      else
+        perform(*args)
+      end
     end
 
     # :nocov:
     def perform(*_args)
       raise 'Not implemented yet'
+    end
+
+    def perform_in_transaction(*args)
+      ActiveRecord::Base.transaction { perform(*args) }
     end
     # :nocov:
 
@@ -67,14 +83,18 @@ module Op
       self.class.check_operation_name(target_class, name)
     end
 
-    def op(target_class, *args)
+    def perform_in_transaction?
+      !parent&.perform_in_transaction? && self.class.transactional?
+    end
+
+    def op(target_class)
       check_operation_name(target_class, target_class.operation_name)
-      target_class.new(context, self).call(*args)
+      target_class.new(context, self)
     end
 
     # Use it if you need to do something immediately.
-    def op!(target_class, *args)
-      op(target_class, *args)
+    def op!(target_class)
+      op(target_class)
     end
   end
 end

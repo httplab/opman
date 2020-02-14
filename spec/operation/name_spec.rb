@@ -9,7 +9,7 @@ module OperationNameSpec
 
   class Foo < Op::Operation
     def perform
-      result = op(PrintCallsChain)
+      result = op(PrintCallsChain).call
 
       Op::Result.new(true, result.value)
     end

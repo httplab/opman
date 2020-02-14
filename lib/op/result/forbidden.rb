@@ -4,10 +4,8 @@ module Op
   class Result
     class Forbidden < Result
       def initialize(message)
-        super(false)
-
+        super(false, :authorization)
         self.value = message
-        self.error = :authorization
       end
 
       def message

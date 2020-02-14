@@ -20,11 +20,9 @@ module Op
       end
 
       def initialize(value)
-        super(false)
+        super(false, :validation)
 
         self.value = value
-        self.error = :validation
-
         gather_am_errors
       end
 
