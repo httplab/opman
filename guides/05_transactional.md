@@ -22,7 +22,7 @@ You can declare service as transactional and use it outside operation
 class CacheDocumentsCounter < Op::Service
   operation_name :cache_documents_counter
 
-  # declare operation as transactional
+  # declare service as transactional
   transactional
 
   def perform
@@ -40,8 +40,6 @@ But if you use such service inside operation then only top level call will cause
 # app/operations/delete_document.rb
 class DeleteDocument < Op::Operation
   operation_name :delete_document
-  
-  # declare operation as transactional
   transactional
 
   # There is top level transaction starts
