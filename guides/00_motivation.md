@@ -89,10 +89,7 @@ nested service classes calls during execution of the operation.
 
 ### Interaction with external worlds from open transactions
 
-Often there are no transactions, as a result, data is not stored atomically, data integrity is violated. 
-It would be great to have tools that simplify transactional support at the operation definition level. 
-For example, declaring an operation as transactional might help us to not worry about transactions within 
-nested sservice classes calls during operation execution.
+Sending messages, launching workers, interacting with external APIs from open (incomplete) transactions. For example, we put money to the user’s account, send an alert about this, after the message is sent, an error occurs and transaction is rolling back. As a result, the user thinks that he has money in his account, but in fact there is none. I would like to have a tool that would allow transparently delaying communications with the outside world until the transaction is successfully completed.
 
 ### Forgotten locks
 
