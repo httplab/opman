@@ -20,8 +20,8 @@ module Op
       success
     end
 
-    def fail?
-      !success?
+    def fail?(reason = nil)
+      !success? && (!reason || reason == error)
     end
 
     def message

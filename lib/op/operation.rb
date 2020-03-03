@@ -19,7 +19,7 @@ module Op
 
       def call(context, *args)
         operation = new(context)
-        operation.perform(*args)
+        operation.call(*args)
       end
 
       private
