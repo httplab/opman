@@ -96,5 +96,10 @@ module Op
     def op!(target_class)
       op(target_class)
     end
+
+    # TODO: Setup proper logger
+    def logger
+      Rails.logger
+    end
   end
 end
