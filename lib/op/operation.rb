@@ -40,7 +40,13 @@ module Op
         return result
       end
 
-      result = perform(*args)
+      result =
+        if perform_in_transaction?
+          perform_in_transaction(*args)
+        else
+          perform(*args)
+        end
+
       ensure_result(result)
 
       success_state

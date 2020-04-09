@@ -50,11 +50,12 @@ module Op
             err_kind = error[:error]
 
             if error[:value]
-              if error[:value].is_a?(Hash)
-                err_val = error[:value][err_src]
-              else
-                err_val = error[:value]
-              end
+              err_val =
+                if error[:value].is_a?(Hash)
+                  error[:value][err_src]
+                else
+                  error[:value]
+                end
             end
 
             err_details = value.errors[err_src][idx]
