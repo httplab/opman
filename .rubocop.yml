@@ -1,40 +1,20 @@
 AllCops:
   Exclude:
+    - 'db/schema.rb'
     - 'vendor/**/*'
     - 'bin/**/*'
+    - 'lib/protobufs/**/*'
+    - 'node_modules/**/*'
   TargetRubyVersion: 2.6
 
 require: rubocop-rails
 
-Layout/HashAlignment:
-  EnforcedLastArgumentHashStyle: always_ignore
-  EnforcedHashRocketStyle: key
-  EnforcedColonStyle: key
-
-Layout/MultilineHashBraceLayout:
-  Enabled: true
-  EnforcedStyle: symmetrical
-
-Layout/LineLength:
-  Max: 120
-
-Metrics/AbcSize:
-  Max: 25
-
-Metrics/BlockLength:
-  Max: 50
-
-Metrics/ClassLength:
-  Max: 150
-
-Metrics/MethodLength:
-  Max: 50
-
-Naming/MethodParameterName:
-  Enabled: false
-
-Naming/RescuedExceptionsVariableName:
-  Enabled: false
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging
+    - development
+    - test
 
 Style/AsciiComments:
   Enabled: false
@@ -46,4 +26,82 @@ Style/StringLiterals:
   Enabled: false
 
 Style/BlockComments:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/BlockLength:
+  Max: 100
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/MethodLength:
+  Max: 50
+
+Layout/LineLength:
+  Max: 120
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: false
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: false
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Rails/RakeEnvironment:
+  Enabled: false
+
+Rails/NotNullColumn:
+  Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/ReversibleMigration:
+  Enabled: false
+
+Naming/MethodParameterName:
   Enabled: false

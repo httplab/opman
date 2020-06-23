@@ -32,7 +32,8 @@ describe Winner do
   end
 
   it 'raise error if something wrong' do
-    expect { Winner.call('wrong') }.to raise_error(ArgumentError)
+    opts = {}
+    expect { Winner.call('wrong', 'call', **opts) }.to raise_error(ArgumentError)
   end
 end
 

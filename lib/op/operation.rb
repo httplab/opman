@@ -17,9 +17,9 @@ module Op
         steps.each { |step| block.call(step[0], step[1]) }
       end
 
-      def call(context, *args)
+      def call(context, *args, **kwargs)
         operation = new(context)
-        operation.call(*args)
+        operation.call(*args, **kwargs)
       end
 
       private
@@ -29,12 +29,12 @@ module Op
       end
     end
 
-    def call(*args)
+    def call(*args, **kwargs)
       check_operation_name(self.class, operation_name)
 
-      prepare_state(args)
+      prepare_state(args, kwargs)
 
-      result = perform_steps(*args)
+      result = perform_steps(*args, **kwargs)
       if result.fail?
         fail_state_with_result(result)
         return result
@@ -42,9 +42,9 @@ module Op
 
       result =
         if perform_in_transaction?
-          perform_in_transaction(*args)
+          perform_in_transaction(*args, **kwargs)
         else
-          perform(*args)
+          perform(*args, **kwargs)
         end
 
       ensure_result(result)
@@ -52,24 +52,25 @@ module Op
       success_state
 
       result
-    rescue StandardError => err
-      fail_state_with_error(err)
+    rescue StandardError => e
+      fail_state_with_error(e)
 
       raise
     end
 
     private
 
-    def prepare_state(args)
+    def prepare_state(args, kwargs)
       @state = OperationState.create!(
         name: operation_name,
         context: context.as_json,
-        args: safe_args(args),
+        args: safe_args(args, kwargs),
         emitter_type: context.emitter_type,
         emitter_id: context.emitter_id
       )
     end
 
+    # rubocop:disable Layout/LineLength
     # There is convention to not pass complex data types in args but sometimes when we need to
     # handle ActionController::Parameters it may contain ActionDispatch::Http::UploadedFile which is
     # not always can be correctly serialized into JSON. Sometimes it raises Encoding::UndefinedConversionError
@@ -83,22 +84,26 @@ module Op
     #     "Content-Disposition: form-data; name=\"website_image[image]\"; filename=\"httplab \xD0\xBB\xD0\xBE\xD0\xB3\xD0\xBE\xD1\x82\xD0\xB8\xD0\xBF.jpg\"\r\nContent-Type: image/jpeg\r\n",
     #    @original_filename="httplab логотип.jpg",
     #    @tempfile=#<File:/tmp/RackMultipart20200502-18311-ra5vtv.jpg>>}
-    def safe_args(args)
+    def safe_args(args, kwargs)
+      target = args
+      target += [kwargs] if kwargs.present?
+
       # Try to convert args to JSON to emit Encoding::UndefinedConversionError
-      args.to_json
+      target.to_json
 
       # return args if there is no error
-      args.as_json
+      target.as_json
     rescue Encoding::UndefinedConversionError
       # Otherwise return special hash with args dumped into string
-      { '_' => args.inspect }
+      { '_' => target.inspect }
     end
+    # rubocop:enable Layout/LineLength
 
-    def perform_steps(*args)
+    def perform_steps(*args, **kwargs)
       result = Result.new(true)
 
       self.class.each_step do |name, opts|
-        result = send(name, *args)
+        result = send(name, *args, **kwargs)
         result = Result.new(true, result) unless result.is_a?(Result)
 
         if result.fail?
@@ -130,14 +135,14 @@ module Op
       return unless @state
 
       @state.update!(state: 'failed', finished_at: Time.current, error_kind: :exception,
-        error_text: err.message, error_backtrace: err.backtrace.join("\n"))
+                     error_text: err.message, error_backtrace: err.backtrace.join("\n"))
     end
 
     def fail_state_with_result(result)
       return unless @state
 
       @state.update!(state: 'failed', finished_at: Time.current, error_kind: result.error.to_sym,
-        error_text: result.message)
+                     error_text: result.message)
     end
   end
 end

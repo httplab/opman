@@ -33,26 +33,26 @@ module Op
       @parent = parent
     end
 
-    def self.call(*args)
+    def self.call(*args, **kwargs)
       service = new
-      service.call(*args)
+      service.call(*args, **kwargs)
     end
 
-    def call(*args)
+    def call(*args, **kwargs)
       if perform_in_transaction?
-        perform_in_transaction(*args)
+        perform_in_transaction(*args, **kwargs)
       else
-        perform(*args)
+        perform(*args, **kwargs)
       end
     end
 
     # :nocov:
-    def perform(*_args)
+    def perform(*_args, **_kwargs)
       raise 'Not implemented yet'
     end
 
-    def perform_in_transaction(*args)
-      ActiveRecord::Base.transaction { perform(*args) }
+    def perform_in_transaction(*args, **kwargs)
+      ActiveRecord::Base.transaction { perform(*args, **kwargs) }
     end
     # :nocov:
 
