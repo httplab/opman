@@ -31,6 +31,7 @@ module Op
 
     def call(*args, **kwargs)
       check_operation_name(self.class, operation_name)
+      ensure_steps_or_perform
 
       prepare_state(args, kwargs)
 
@@ -40,12 +41,14 @@ module Op
         return result
       end
 
-      result =
-        if perform_in_transaction?
-          perform_in_transaction(*args, **kwargs)
-        else
-          perform(*args, **kwargs)
-        end
+      if run_perform?
+        result =
+          if perform_in_transaction?
+            perform_in_transaction(*args, **kwargs)
+          else
+            perform(*args, **kwargs)
+          end
+      end
 
       ensure_result(result)
 
@@ -59,6 +62,24 @@ module Op
     end
 
     private
+
+    def steps
+      self.class.instance_variable_get('@steps')
+    end
+
+    def run_perform?
+      respond_to?(:perform) && !steps.any? { |name, _opts| name == :perform }
+    end
+
+    def steps_or_perform_defined?
+      steps.present? || respond_to?(:perform)
+    end
+
+    def ensure_steps_or_perform
+      return if steps_or_perform_defined?
+
+      raise "Operation #{self.class.name} must have any step or perform method"
+    end
 
     def prepare_state(args, kwargs)
       @state = OperationState.create!(

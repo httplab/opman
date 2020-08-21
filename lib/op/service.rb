@@ -46,11 +46,6 @@ module Op
       end
     end
 
-    # :nocov:
-    def perform(*_args, **_kwargs)
-      raise 'Not implemented yet'
-    end
-
     def perform_in_transaction(*args, **kwargs)
       ActiveRecord::Base.transaction { perform(*args, **kwargs) }
     end
