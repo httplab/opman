@@ -22,14 +22,6 @@ module Op
         operation.call(*args, **kwargs)
       end
 
-      def run_perform?
-        method_defined?(:perform) && !@steps.map { |step| step[0] }.include?(:perform)
-      end
-
-      def steps_or_perform_defined?
-        @steps.present? || method_defined?(:perform)
-      end
-
       private
 
       def steps
@@ -39,7 +31,7 @@ module Op
 
     def call(*args, **kwargs)
       check_operation_name(self.class, operation_name)
-      check_steps_implementation
+      ensure_steps_or_perform
 
       prepare_state(args, kwargs)
 
@@ -49,7 +41,7 @@ module Op
         return result
       end
 
-      if self.class.run_perform?
+      if run_perform?
         result =
           if perform_in_transaction?
             perform_in_transaction(*args, **kwargs)
@@ -71,8 +63,20 @@ module Op
 
     private
 
-    def check_steps_implementation
-      return if self.class.steps_or_perform_defined?
+    def steps
+      self.class.instance_variable_get('@steps')
+    end
+
+    def run_perform?
+      respond_to?(:perform) && !steps.any? { |name, _opts| name == :perform }
+    end
+
+    def steps_or_perform_defined?
+      steps.present? || respond_to?(:perform)
+    end
+
+    def ensure_steps_or_perform
+      return if steps_or_perform_defined?
 
       raise "Operation #{self.class.name} must have any step or perform method"
     end
