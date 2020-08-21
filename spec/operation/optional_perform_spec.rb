@@ -9,17 +9,14 @@ module OperationOptionalPerformSpec
       operation.call
     end
 
-    context 'when perform not defited' do
-    end
-
-    context 'when perform not defited' do
+    context 'when perform not defined' do
       context 'when no steps added' do
         let(:operation) { EmptyOperation.new(operation_context) }
         class EmptyOperation < Op::Operation
           self.operation_name = 'empty_operation'
         end
 
-        it 'doesnt call perform and raise error' do
+        it 'raise error' do
           error_message = "Operation OperationOptionalPerformSpec::EmptyOperation " \
                           "must have any step or perform method"
           expect { do_call }.to raise_error(error_message)
@@ -36,7 +33,7 @@ module OperationOptionalPerformSpec
           def one(*); end
         end
 
-        it 'doesnt call perform' do
+        it 'call step' do
           expect(operation).to receive(:one).ordered.and_call_original
           do_call
         end
@@ -97,7 +94,7 @@ module OperationOptionalPerformSpec
             end
           end
 
-          it 'call perform, then one' do
+          it 'call perform, then step' do
             expect(operation).to receive(:perform).ordered.and_call_original
             expect(operation).to receive(:one).ordered.and_call_original
             do_call
