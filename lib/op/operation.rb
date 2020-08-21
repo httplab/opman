@@ -22,6 +22,18 @@ module Op
         operation.call(*args, **kwargs)
       end
 
+      def skip_perform
+        @skip_perform = true
+      end
+
+      def skip_perform?
+        @skip_perform == true
+      end
+
+      def steps_blank?
+        @steps.blank?
+      end
+
       private
 
       def steps
@@ -31,6 +43,7 @@ module Op
 
     def call(*args, **kwargs)
       check_operation_name(self.class, operation_name)
+      check_steps_implementation
 
       prepare_state(args, kwargs)
 
@@ -40,12 +53,14 @@ module Op
         return result
       end
 
-      result =
-        if perform_in_transaction?
-          perform_in_transaction(*args, **kwargs)
-        else
-          perform(*args, **kwargs)
-        end
+      unless skip_perform?
+        result =
+          if perform_in_transaction?
+            perform_in_transaction(*args, **kwargs)
+          else
+            perform(*args, **kwargs)
+          end
+      end
 
       ensure_result(result)
 
@@ -59,6 +74,12 @@ module Op
     end
 
     private
+
+    def check_steps_implementation
+      return unless self.class.steps_blank? && skip_perform?
+
+      raise "Operation #{self.class.name} must have any step or doesnt skip perform method"
+    end
 
     def prepare_state(args, kwargs)
       @state = OperationState.create!(
@@ -113,6 +134,10 @@ module Op
       end
 
       result
+    end
+
+    def skip_perform?
+      self.class.skip_perform?
     end
 
     def discard_state
