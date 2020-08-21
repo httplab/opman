@@ -22,12 +22,12 @@ module Op
         operation.call(*args, **kwargs)
       end
 
-      def skip_perform
-        @skip_perform = true
+      def perform_defined?
+        method_defined? :perform
       end
 
-      def skip_perform?
-        @skip_perform == true
+      def perform_is_step?
+        @steps.map { |step| step[0] }.include? :perform
       end
 
       def steps_blank?
@@ -53,7 +53,7 @@ module Op
         return result
       end
 
-      unless skip_perform?
+      if self.class.perform_defined? && !self.class.perform_is_step?
         result =
           if perform_in_transaction?
             perform_in_transaction(*args, **kwargs)
@@ -76,9 +76,9 @@ module Op
     private
 
     def check_steps_implementation
-      return unless self.class.steps_blank? && skip_perform?
+      return unless self.class.steps_blank? && !self.class.perform_defined?
 
-      raise "Operation #{self.class.name} must have any step or doesnt skip perform method"
+      raise "Operation #{self.class.name} must have any step or perform method"
     end
 
     def prepare_state(args, kwargs)
@@ -134,10 +134,6 @@ module Op
       end
 
       result
-    end
-
-    def skip_perform?
-      self.class.skip_perform?
     end
 
     def discard_state
