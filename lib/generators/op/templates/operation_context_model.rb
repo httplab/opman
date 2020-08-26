@@ -6,7 +6,7 @@
 class OperationContext < Op::Context
   attr_reader :user, :emmiter_type
 
-  def initialize(user = nil, emitter_type: :user)
+  def initialize(user = nil, emitter_type: :system)
     @user = user
     @emmiter_type = emitter_type
   end
@@ -15,7 +15,7 @@ class OperationContext < Op::Context
     OperationContext.new(user, emitter_type: :system)
   end
 
-  def self.user(user = nil)
+  def self.user(user)
     OperationContext.new(user, emitter_type: :user)
   end
 
