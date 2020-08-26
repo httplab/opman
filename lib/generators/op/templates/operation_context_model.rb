@@ -4,29 +4,42 @@
 # Only one thing you need to keep in mind - methods :emitter_type,
 # :emitter_id, :to_s, :to_h must be properly defined.
 class OperationContext < Op::Context
-  attr_reader :user
+  attr_reader :user, :emmiter_type
 
-  def initialize(user)
+  def initialize(user = nil, emitter_type: :user)
     @user = user
+    @emmiter_type = emitter_type
   end
 
-  # Check OperationState model to get full list of available emitters.
-  def emitter_type
-    :user
+  def self.system(user = nil)
+    OperationContext.new(user, emitter_type: :system)
+  end
+
+  def self.user(user = nil)
+    OperationContext.new(user, emitter_type: :user)
   end
 
   def emitter_id
-    user.id
+    user&.id
+  end
+
+  def system?
+    emitter_type == :system
   end
 
   def to_s
-    [:user, user.id, user.email].join(',')
+    if system?
+      'system'
+    else
+      [:user, user.id, user.email].join(',')
+    end
   end
 
   def to_h
     {
-      user_id: user.id,
-      user_email: user.email
-    }
+      emitter_type: emitter_type,
+      user_id: user&.id,
+      user_email: user&.email
+    }.compact
   end
 end
