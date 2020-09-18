@@ -68,7 +68,7 @@ module Op
     end
 
     def run_perform?
-      respond_to?(:perform) && !steps.any? { |name, _opts| name == :perform }
+      respond_to?(:perform) && steps.none? { |name, _opts| name == :perform }
     end
 
     def steps_or_perform_defined?

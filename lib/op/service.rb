@@ -2,6 +2,8 @@
 
 module Op
   class Service
+    include ResultHelpers
+
     OPERATION_NAME_REGEX = /^[a-z]+[a-z1-9_]+$/.freeze
 
     attr_reader :context

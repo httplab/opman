@@ -4,15 +4,15 @@
 # Only one thing you need to keep in mind - methods :emitter_type,
 # :emitter_id, :to_s, :to_h must be properly defined.
 class OperationContext < Op::Context
-  attr_reader :user, :emmiter_type
+  attr_reader :user, :emitter_type
 
   def initialize(user = nil, emitter_type: :system)
     @user = user
-    @emmiter_type = emitter_type
+    @emitter_type = emitter_type
   end
 
-  def self.system(user = nil)
-    OperationContext.new(user, emitter_type: :system)
+  def self.system
+    OperationContext.new(nil, emitter_type: :system)
   end
 
   def self.user(user)

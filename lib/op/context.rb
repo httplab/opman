@@ -2,7 +2,7 @@
 
 # :nocov:
 module Op
-  class Context < Service
+  class Context
     def emitter_type
       raise 'Not implemented'
     end

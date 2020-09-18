@@ -38,7 +38,7 @@ CREATE TABLE public.operation_states (
     emitter_id bigint,
     state integer DEFAULT 0 NOT NULL,
     progress_pct integer DEFAULT 0 NOT NULL,
-    error_kind integer DEFAULT 0,
+    error_kind integer,
     error_text character varying,
     error_backtrace character varying,
     finished_at timestamp without time zone,
@@ -113,6 +113,6 @@ ALTER TABLE ONLY public.schema_migrations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20200623154307');
+('20200918200226');
 
 

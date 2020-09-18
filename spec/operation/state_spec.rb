@@ -12,7 +12,7 @@ end
 
 describe 'Tracking Operation State' do
   let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
-  let(:operation_context) { OperationContext.new(user) }
+  let(:operation_context) { OperationContext.new(user, emitter_type: 'user') }
   let(:operation) { Foo.new(operation_context) }
   let(:operation_state) { operation.state }
 
@@ -27,7 +27,7 @@ describe 'Tracking Operation State' do
 
     expect(OperationState.count).to eq 1
     expect(operation_state.name).to eq 'foo'
-    expect(operation_state.context).to eq('user_id' => user.id, 'user_email' => user.email)
+    expect(operation_state.context).to eq('emitter_type' => 'user', 'user_id' => user.id, 'user_email' => user.email)
     expect(operation_state.args).to eq ['Alice', { 'greeting' => 'Hello' }]
     expect(operation_state.emitter_type).to eq 'user'
     expect(operation_state.emitter_id).to eq user.id
