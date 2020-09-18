@@ -3,7 +3,7 @@
 module OperationNameSpec
   class PrintCallsChain < Op::Service
     def perform
-      Op::Result.new(true, current_calls_chain)
+      success(current_calls_chain)
     end
   end
 
@@ -11,7 +11,7 @@ module OperationNameSpec
     def perform
       result = op(PrintCallsChain).call
 
-      Op::Result.new(true, result.value)
+      success(result.value)
     end
   end
 

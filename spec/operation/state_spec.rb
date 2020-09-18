@@ -6,7 +6,7 @@ class Foo < Op::Operation
   self.operation_name = 'foo'
 
   def perform(name, greeting:)
-    Op::Result.new(true, "#{greeting}, #{name}!")
+    success("#{greeting}, #{name}!")
   end
 end
 

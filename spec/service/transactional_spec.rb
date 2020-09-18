@@ -10,7 +10,7 @@ module ServiceTransactionalSpec
     def perform
       op(Bar).call
 
-      Op::Result.new(true)
+      success
     end
   end
 
@@ -21,7 +21,7 @@ module ServiceTransactionalSpec
     # This perform should not be wrapped in transaction despite Bar is transactional. It is because
     # Bar is called by Foo which is already defined as transactional.
     def perform
-      Op::Result.new(true)
+      success
     end
   end
 

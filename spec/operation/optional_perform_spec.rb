@@ -47,7 +47,7 @@ module OperationOptionalPerformSpec
           self.operation_name = 'perform_operation'
 
           def perform(*)
-            Op::Result.new(true)
+            success
           end
         end
 
@@ -68,7 +68,7 @@ module OperationOptionalPerformSpec
             def one(*); end
 
             def perform(*)
-              Op::Result.new(true)
+              success
             end
           end
 
@@ -90,7 +90,7 @@ module OperationOptionalPerformSpec
             def one(*); end
 
             def perform(*)
-              Op::Result.new(true)
+              success
             end
           end
 

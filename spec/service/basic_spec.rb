@@ -19,7 +19,7 @@ end
 
 class Looser < Op::Service
   def perform(_a)
-    Op::Result.new(false, :not_found)
+    failure(:not_found, "Optional message about not found error", val: 123)
   end
 end
 
@@ -43,5 +43,7 @@ describe Looser do
 
     expect(result).to be_fail
     expect(result.error).to eq :not_found
+    expect(result.message).to eq "Optional message about not found error"
+    expect(result.value).to eq 123
   end
 end
