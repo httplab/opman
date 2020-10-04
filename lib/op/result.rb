@@ -2,6 +2,10 @@
 
 module Op
   class Result
+    # Extend this class by result helpers to provide nice factory methods Op::Result.success
+    # and Op::Result.failure, it useful in tests.
+    extend ResultHelpers
+
     attr_reader :success
     attr_accessor :value
     attr_accessor :error
@@ -24,6 +28,7 @@ module Op
     def fail?(reason = nil)
       !success? && (!reason || reason == error)
     end
+    alias failed? fail?
 
     def message
       @message || default_message
