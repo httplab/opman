@@ -8,23 +8,23 @@
 * [Operation names chaining](#operation-names-chaining)
 * [Operation state](#operation-state)
 
-Operation is an entry point to application business logic. Operations define what and how application does. 
-All actions initiated by external world which change state of system should be defined as operations. All actions
-state and progress of which have to be tracked should be defined as operations. 
+Operation is an entry point to application business logic. Operations define what and how application does.
+All actions initiated by external world which change state of the system should be defined as operations.
+All actions state and progress of which have to be tracked should be defined as operations.
 
-Operation can be responsible and can do many things connected to each other. For example operation can create 
-entities in database communicate with external API persist results and send notifications then. Operation defines 
+Operation can be responsible and can do many things connected to each other. For example operation can create
+entities in database communicate with external API persist results and send notifications then. Operation defines
 workflow which should be fulfilled to get thing done.
 
-`InviteUser`, `PublishPost`, `EditBillingSettings` have to be an operation. `SaveReportToPDF`, `CheckAvailableCredits`, 
-`FetchQuestionsList` might not be operation because it does not seem that they change system state but we can declare they 
-as operations in case if we want to track their progress or execution state.
+`InviteUser`, `PublishPost`, `EditBillingSettings` have to be an operation. `SaveReportToPDF`, `CheckAvailableCredits`,
+`FetchQuestionsList` might not be operation because it does not seem that they change system state but we can declare
+they as operations in case if we want to track their progress or execution state.
 
 ## Operation context
 
-Operation context is one of the most important things. Operation context defines environment in which operation executes.
-In controllers we usually have `current_user` and `current_organization` in case of operations we have to define
-context containing this (and maybe additional) data.
+Operation context is one of the most important things. Operation context defines environment in which operation
+executes. In controllers we usually have `current_user` and `current_organization` in case of operations we have
+to define context containing this (and maybe additional) data.
 
 ```ruby
 # app/models/operation_context.rb
@@ -57,26 +57,46 @@ class OperationContext < Op::Context
 end
 ```
 
-`emitter_type` and `emitter_id` define who is initiator of execution of operation. It might be `:user`, `:system` or someone else.
+`emitter_type` and `emitter_id` define who is initiator of execution of operation. It might be `:user`, `:system` or
+someone else.
 
 ## Howto define and run operation
 
-We have to put operations under `app/operations` directory. Technically operation inherits service class. It means that operation has the same interface as service class. Operation should define method `.perform` and return `Op::Result` similar to service class. 
+We have to put operations under `app/operations` directory. Technically operation inherits service class.
+It means that operation has the same interface as service class. Operation can define method `.perform`
+or can define steps. Operation returns `Op::Result` similar to service class.
 
 ```ruby
 # app/operations/foo.rb
 class Foo < Op::Operation
-  self.operation_name = 'foo'
+  operation_name 'foo'
 
   def perform(name, greeting:)
-    Op::Result.new(true, "#{greeting}, #{name}!")
+    success("#{greeting}, #{name}!")
+  end
+end
+```
+
+```ruby
+# app/operations/bar.rb
+class Bar < Op::Operation
+  operation_name 'bar'
+
+  step :prepare
+  step :say_hello
+
+  def prepare(name, greeting:)
+    failure()
+  end
+
+  def say_hello(name, greeting:)
   end
 end
 ```
 
 There are several important differences from service class. Since operation is entry point to application business logic it
 
-1. CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console. 
+1. CAN BE executed ONLY from controller, Sidekiq worker, message queue consumer, rails runner or console.
 2. CANNOT call another operation.
 3. CANNOT BE called from inside service class.
 4. When you call an operation USE ONLY data types which can be CORRECTLY SERIALIZED and DESERIALIZED from JSON.
@@ -87,13 +107,13 @@ It is easy to execute operation
 # ...somewhere in controller...
 
 user = User.find(params[:user_id])
-ctx = OperationContext.new(user) 
+ctx = OperationContext.new(user)
 
 # just use .call shortcut
 result = Foo.call(ctx, 'Alice', greeting: 'Hello')
 if result.success?
   puts result.value # => "Hello, Alice!"
-  
+
   # do something else here
 end
 ```
@@ -109,13 +129,13 @@ result = operation.call('Alice', greeting: 'Hello')
 
 ## Operation name
 
-Operation name is pretty important. It helps us to identify events related to operation execution in logs and audit records. 
+Operation name is pretty important. It helps us to identify events related to operation execution in logs and audit records.
 
 ```ruby
 # app/operations/foo.rb
 class Foo < Op::Operation
-  self.operation_name = 'foo'
-  
+  self.operation_name 'foo'
+
   # some code
 end
 ```
@@ -125,8 +145,8 @@ If service class can be executed inside operation you must define its `operation
 ```ruby
 # app/operations/foo.rb
 class NotifyUser < Op::Service
-  self.operation_name = 'notify_user'
-  
+  self.operation_name 'notify_user'
+
   # some code
 end
 ```
@@ -141,40 +161,40 @@ following guides.
 ```ruby
 # app/services/bar.rb
 class Bar < Op::Service
-  self.operation_name = 'bar'
+  self.operation_name 'bar'
 
   # some code
 end
 
 # app/operations/foo.rb
 class Foo < Op::Operation
-  self.operation_name = 'foo'
-  
+  self.operation_name 'foo'
+
   def perform
     # Good. Use factory method op() to get instance of Bar service class and then call it.
     result = op(Bar).call
-    
-    # some dode
-    
-    # Bad. Just call Bar service class. It is working but this call lost all Operations Framework magic, 
-    # context will be missing inside this call, audit and logging will be lost as well as other things 
+
+    # some code
+
+    # Bad. Just call Bar service class. It is working but this call lost all Operations Framework magic,
+    # context will be missing inside this call, audit and logging will be lost as well as other things
     # like locks, transactional execution and so on.
     result = Bar.call
-    
+
     # some code
   end
 end
 ```
 
 Do not execute service classes, Sidekiq workers, do not use mailers and do not publish messages without using `op()`
-method to get instance of corresponding class. 
+method to get instance of corresponding class.
 
-PLEASE NOTE that method `op()` is available not only directly inside operation but inside all involved service classes too. 
+PLEASE NOTE that method `op()` is available not only directly inside operation but inside all involved service classes too.
 We collect and manage calls tree using method `op()`.
 
 ## Operation context propagation
 
-When we use method `op()` to call service classes (and other parties) we automatically get operation context 
+When we use method `op()` to call service classes (and other parties) we automatically get operation context
 inside nested calls.
 
 
@@ -208,7 +228,7 @@ ctx = OperationContext.new(user)
 
 operation = Baz.new(ctx)
 
-# Context is popagated down to call tree and available even inside Bar#perform
+# Context is propagated down to call tree and available even inside Bar#perform
 operation.call
 ```
 
@@ -300,4 +320,3 @@ PLEASE NOTE! Since we serialize operation arguments to JSON to persist them into
 can be automatically serialized and deserialized from JSON as arguments of operation.
 
 Operation state records is pretty usefull to get list of actions which user performed in the system.
-
