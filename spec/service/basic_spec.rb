@@ -19,7 +19,7 @@ end
 
 class Looser < Op::Service
   def perform(_a)
-    failure(:not_found, "Optional message about not found error", val: 123)
+    failure(:not_found, 123, message: "Optional message about not found error")
   end
 end
 

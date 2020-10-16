@@ -8,10 +8,10 @@ module Op
       Result.new(true, val)
     end
 
-    def failure(error, message = nil, val: nil)
+    def failure(error, value = nil, message: nil)
       result = Result.new(false, error)
+      result.value = value
       result.message = message
-      result.value = val
       result
     end
   end
