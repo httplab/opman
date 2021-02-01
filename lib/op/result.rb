@@ -29,6 +29,7 @@ module Op
       !success? && (!reason || reason == error)
     end
     alias failed? fail?
+    alias failure? fail?
 
     def message
       @message || default_message
