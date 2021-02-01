@@ -52,7 +52,11 @@ module Op
 
       ensure_result(result)
 
-      success_state
+      if result.fail?
+        fail_state_with_result(result)
+      else
+        success_state
+      end
 
       result
     rescue StandardError => e

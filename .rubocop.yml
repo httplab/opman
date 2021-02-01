@@ -52,14 +52,56 @@ Style/RedundantRegexpEscape:
 Style/SlicingWithRange:
   Enabled: true
 
-Style/RedundantFetchBlock:
+Style/NumericLiterals:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/MethodCallWithArgsParentheses:
   Enabled: true
+  IgnoredMethods:
+    require
+    require_relative
+    info
+    logger_info
+    logger_warn
+    error
+    raise
+    puts
+    p
+    in?
+    is_a?
+    run
+    yield
+    return
+    render
+    redirect_to
+    respond_with
+    authorize
+    head
+    policy_scope
+    apply_scopes
+    raw
+    content_tag
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'test/**/*.rb'
+    - 'db/migrate/*.rb'
+    - 'config/**/*.rb'
+    - 'Gemfile'
+    - 'Capfile'
 
 Metrics/AbcSize:
   Max: 40
 
 Metrics/BlockLength:
   Max: 100
+  Exclude:
+  - spec/**/*
 
 Metrics/ClassLength:
   Max: 150
@@ -70,6 +112,19 @@ Metrics/MethodLength:
 Layout/LineLength:
   Max: 120
 
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Layout/HashAlignment:
+  EnforcedLastArgumentHashStyle: always_ignore
+  EnforcedHashRocketStyle: key
+
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
@@ -78,6 +133,9 @@ Layout/EmptyLinesAroundAttributeAccessor:
 
 Layout/SpaceAroundMethodCallOperator:
   Enabled: false
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
 
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
@@ -101,7 +159,10 @@ Rails/BulkChangeTable:
   Enabled: false
 
 Rails/ReversibleMigration:
+  Enabled: true
+
+Rails/SkipsModelValidations:
   Enabled: false
 
-Naming/MethodParameterName:
-  Enabled: false
+Style/RedundantFetchBlock:
+  Enabled: true

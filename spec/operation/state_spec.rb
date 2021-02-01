@@ -57,4 +57,16 @@ describe 'Tracking Operation State' do
     expect(operation_state.error_text).to eq 'Unexpected failure'
     expect(operation_state.error_backtrace).to include('lib/op/operation.rb')
   end
+
+  it 'set state :failed when perform returns result with failure' do
+    allow(operation).to receive(:perform).and_return(Op::Result.failure(:authorization, message: 'Oh no!'))
+
+    expect(do_call).to be_failed
+
+    expect(OperationState.count).to eq 1
+    expect(operation_state.state).to eq 'failed'
+    expect(operation_state.finished_at).to_not be_nil
+    expect(operation_state.error_text).to eq 'Oh no!'
+    expect(operation_state.error_backtrace).to be_nil
+  end
 end
