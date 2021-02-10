@@ -27,9 +27,10 @@ module OperationResultSpec
     context 'when result is Integer' do
       let(:result) { 1 }
 
-      it 'raise error' do
-        msg = %(Operation must return "Op::Result" or inherited (Recieved "Integer"))
-        expect { do_call }.to raise_error(RuntimeError, msg)
+      it 'return success result' do
+        op_result = do_call
+        expect(op_result).to be_instance_of(::Op::Result)
+        expect(op_result).to be_success
       end
     end
   end
