@@ -56,7 +56,7 @@ module Op
       result = nil
       ActiveRecord::Base.transaction do
         result = run_perform(*args, **kwargs)
-        raise ActiveRecord::Rollback, result.message if result.fail?
+        raise ActiveRecord::Rollback.new(result.message) if result.fail? # rubocop:disable Style/RaiseArgs
       end
       result
     end
