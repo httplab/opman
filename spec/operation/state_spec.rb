@@ -59,13 +59,14 @@ describe 'Tracking Operation State' do
   end
 
   it 'set state :failed when perform returns result with failure' do
-    allow(operation).to receive(:perform).and_return(Op::Result.failure(:authorization, message: 'Oh no!'))
+    allow(operation).to receive(:perform).and_return(Op::Result.failure(:my_custom_error, message: 'Oh no!'))
 
     expect(do_call).to be_failed
 
     expect(OperationState.count).to eq 1
     expect(operation_state.state).to eq 'failed'
     expect(operation_state.finished_at).to_not be_nil
+    expect(operation_state.error_kind).to eq 'my_custom_error'
     expect(operation_state.error_text).to eq 'Oh no!'
     expect(operation_state.error_backtrace).to be_nil
   end
