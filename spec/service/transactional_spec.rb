@@ -9,7 +9,6 @@ module ServiceTransactionalSpec
     # and Foo is initiator of further calls
     def perform
       op(Bar).call
-
       success
     end
   end

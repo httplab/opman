@@ -41,16 +41,7 @@ module Op
         return result
       end
 
-      if run_perform?
-        result =
-          if perform_in_transaction?
-            perform_in_transaction(*args, **kwargs)
-          else
-            perform(*args, **kwargs)
-          end
-      end
-
-      ensure_result(result)
+      result = super(*args, **kwargs) if run_perform?
 
       if result.fail?
         fail_state_with_result(result)
@@ -149,11 +140,6 @@ module Op
 
     def success_state
       @state.update!(state: 'success', finished_at: Time.current, progress_pct: 100)
-    end
-
-    def ensure_result(result)
-      err = %(Operation must return "Op::Result" or inherited (Recieved "#{result.class}"))
-      raise err unless result.class <= Op::Result
     end
 
     def fail_state_with_error(err)

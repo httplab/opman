@@ -44,14 +44,29 @@ module Op
       if perform_in_transaction?
         perform_in_transaction(*args, **kwargs)
       else
-        perform(*args, **kwargs)
+        run_perform(*args, **kwargs)
       end
     end
 
+    def run_perform(*args, **kwargs)
+      ensure_result(perform(*args, **kwargs))
+    end
+
     def perform_in_transaction(*args, **kwargs)
-      ActiveRecord::Base.transaction { perform(*args, **kwargs) }
+      result = nil
+      ActiveRecord::Base.transaction do
+        result = run_perform(*args, **kwargs)
+        raise ActiveRecord::Rollback.new(result.message) if result.fail? # rubocop:disable Style/RaiseArgs
+      end
+      result
     end
     # :nocov:
+
+    def ensure_result(result)
+      return result if result.class <= Op::Result
+
+      success
+    end
 
     def operation_name
       self.class.operation_name
@@ -81,7 +96,13 @@ module Op
     end
 
     def perform_in_transaction?
-      !parent&.perform_in_transaction? && self.class.transactional?
+      !parent_performed_in_transaction? && self.class.transactional?
+    end
+
+    def parent_performed_in_transaction?
+      return false if parent.blank?
+
+      parent.perform_in_transaction?
     end
 
     def op(target_class)
