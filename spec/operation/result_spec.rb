@@ -96,7 +96,9 @@ module OperationResultSpec
       end
 
       context 'failure' do
-        let(:result) { Op::Result.failure(:funny_error, args, message: 'Message from failure result options!', value_accessors: true) }
+        let(:result) do
+          Op::Result.failure(:funny_error, args, message: 'Message from failure result options!', value_accessors: true)
+        end
 
         include_examples 'hash examples'
 

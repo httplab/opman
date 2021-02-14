@@ -113,6 +113,6 @@ ALTER TABLE ONLY public.schema_migrations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20210214205732');
+('20210214210825');
 
 
