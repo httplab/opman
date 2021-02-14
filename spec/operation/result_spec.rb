@@ -46,13 +46,13 @@ module OperationResultSpec
       let(:data) { ['Hello world', 123] }
 
       context 'success' do
-        let(:result) { Op::Result.success(data) }
+        let(:result) { Op::Result.success(data, value_accessors: true) }
 
         include_examples 'array examples'
       end
 
       context 'failure' do
-        let(:result) { Op::Result.failure(:funny_error, data, message: 'Say hello!') }
+        let(:result) { Op::Result.failure(:funny_error, data, message: 'Say hello!', value_accessors: true) }
 
         include_examples 'array examples'
       end
@@ -74,10 +74,18 @@ module OperationResultSpec
         end
       end
 
-      let(:data) { { str_prop: 'Hello world', num_prop: 123, 42 => 'wrong key', message: 'Message from data!' } }
+      let(:args) do
+        {
+          str_prop: 'Hello world',
+          num_prop: 123,
+          42 => 'wrong key',
+          message: 'Message from data!',
+          value_accessors: true
+        }
+      end
 
       context 'success' do
-        let(:result) { Op::Result.success(data) }
+        let(:result) { Op::Result.success(args) }
 
         include_examples 'hash examples'
 
@@ -87,7 +95,7 @@ module OperationResultSpec
       end
 
       context 'failure' do
-        let(:result) { Op::Result.failure(:funny_error, data, message: 'Message from failure result options!') }
+        let(:result) { Op::Result.failure(:funny_error, args, message: 'Message from failure result options!', value_accessors: true) }
 
         include_examples 'hash examples'
 

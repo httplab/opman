@@ -11,12 +11,19 @@ module Op
     attr_accessor :error
     attr_writer :message
 
-    def initialize(success, value_or_error = nil)
+    # Arguments is a bit messy but we want to keep it for backward compatibility for a while.
+    # Set value_accessors: true if you want to generate methods for keys in case if value is a hash.
+    # It can be useful if you need to return more than one value with result, for example:
+    #   result = Op::Result.new(true, { user: 'John', email: 'john@example.org'  }, value_accessors: true)
+    #   result.user  # => John
+    #   result.email # => john@example.org
+    def initialize(success, value_or_error = nil, value_accessors: false)
+      @value_accessors = value_accessors
       @success = success
 
       if success?
         @value = value_or_error
-        generate_value_accessors
+        generate_value_accessors if @value_accessors
       else
         @error = value_or_error
       end
@@ -38,7 +45,7 @@ module Op
 
     def value=(val)
       @value = val
-      generate_value_accessors
+      generate_value_accessors if @value_accessors
     end
 
     private
@@ -70,6 +77,10 @@ module Op
         end
 
         next unless str_key =~ /^[a-z_]+[a-z0-9_]*$/
+
+        # We don't want to override existing result methods, so we raise error in case
+        # of names conflict.
+        raise "Method '#{key}' is already defined" if respond_to?(key)
 
         define_singleton_method(key) do
           value[key]
