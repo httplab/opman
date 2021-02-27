@@ -7,6 +7,8 @@ class OperationContext < Op::Context
   attr_reader :user, :emitter_type
 
   def initialize(user = nil, emitter_type: :system)
+    super()
+
     @user = user
     @emitter_type = emitter_type
   end

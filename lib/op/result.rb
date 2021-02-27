@@ -6,8 +6,7 @@ module Op
     # and Op::Result.failure, it useful in tests.
     extend ResultHelpers
 
-    attr_reader :success
-    attr_reader :value
+    attr_reader :success, :value
     attr_accessor :error
     attr_writer :message
 

@@ -16,6 +16,8 @@ Gem::Specification.new do |spec|
   spec.description = "Op is set of tools which help to organize business logic in a Rails application"
   spec.license     = "MIT"
 
+  spec.required_ruby_version = ">= 2.7.2"
+
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
@@ -28,6 +30,5 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency("rails", ">= 5.2.1")
-
   spec.add_development_dependency("pg")
 end

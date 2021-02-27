@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Lint/ConstantDefinitionInBlock
 module OperationOptionalPerformSpec
   describe 'Operation skip perform' do
     let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
@@ -104,3 +105,4 @@ module OperationOptionalPerformSpec
     end
   end
 end
+# rubocop:enable Lint/ConstantDefinitionInBlock

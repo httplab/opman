@@ -6,8 +6,7 @@ module Op
 
     OPERATION_NAME_REGEX = /^[a-z]+[a-z1-9_]+$/.freeze
 
-    attr_reader :context
-    attr_reader :parent
+    attr_reader :context, :parent
 
     class << self
       def operation_name(new_name = nil)

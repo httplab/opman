@@ -5,7 +5,8 @@ AllCops:
     - 'bin/**/*'
     - 'lib/protobufs/**/*'
     - 'node_modules/**/*'
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
+  NewCops: enable
 
 require: rubocop-rails
 
@@ -15,6 +16,9 @@ Rails/UnknownEnv:
     - staging
     - development
     - test
+
+Style/StringConcatenation:
+  Enabled: false
 
 Style/AsciiComments:
   Enabled: false
@@ -62,7 +66,7 @@ Style/ConditionalAssignment:
   Enabled: false
 
 Style/MethodCallWithArgsParentheses:
-  Enabled: true
+  Enabled: false
   IgnoredMethods:
     require
     require_relative
