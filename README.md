@@ -1,28 +1,7 @@
-# Op
-Short description and motivation.
+# opman
 
-## Usage
-How to use my plugin.
+TODO:
 
-## Installation
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'opman'
-```
-
-And then execute:
-```bash
-$ bundle
-```
-
-Or install it yourself as:
-```bash
-$ gem install opman
-```
-
-## Contributing
-Contribution directions go here.
-
-## License
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+1. Generate operation name automatically.
+2. Make operation transactional by default.
+3. Deprecate steps and discard_state_on_fail.

@@ -1,27 +1,17 @@
 # frozen_string_literal: true
 
+require_relative './operation/steps'
+
 module Op
   class Operation < Service
+    include OperationSteps
+
     attr_reader :state
 
     class << self
-      def step(name, opts = {})
-        steps << [name, opts.symbolize_keys]
-      end
-
-      def each_step(&block)
-        steps.each { |step| block.call(step[0], step[1]) }
-      end
-
       def call(context, *args, **kwargs)
         operation = new(context)
         operation.call(*args, **kwargs)
-      end
-
-      private
-
-      def steps
-        @steps ||= []
       end
     end
 
@@ -53,24 +43,6 @@ module Op
     end
 
     private
-
-    def steps
-      self.class.instance_variable_get('@steps')
-    end
-
-    def run_perform?
-      respond_to?(:perform) && steps.none? { |name, _opts| name == :perform }
-    end
-
-    def steps_or_perform_defined?
-      steps.present? || respond_to?(:perform)
-    end
-
-    def ensure_steps_or_perform
-      return if steps_or_perform_defined?
-
-      raise "Operation #{self.class.name} must have any step or perform method"
-    end
 
     def prepare_state(args, kwargs)
       @state = OperationState.create!(
@@ -110,22 +82,6 @@ module Op
       { '_' => target.inspect }
     end
     # rubocop:enable Layout/LineLength
-
-    def perform_steps(*args, **kwargs)
-      result = Result.new(true)
-
-      self.class.each_step do |name, opts|
-        result = send(name, *args, **kwargs)
-        result = Result.new(true, result) unless result.is_a?(Result)
-
-        if result.fail?
-          discard_state if opts[:discard_state_on_fail]
-          break
-        end
-      end
-
-      result
-    end
 
     def discard_state
       return unless @state
