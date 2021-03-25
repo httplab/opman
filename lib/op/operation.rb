@@ -5,6 +5,14 @@ module Op
     attr_reader :state
 
     class << self
+      def suppress_errors
+        @suppress_errors = true
+      end
+
+      def suppress_errors?
+        @suppress_errors == true
+      end
+
       def step(name, opts = {})
         steps << [name, opts.symbolize_keys]
       end
@@ -49,10 +57,16 @@ module Op
     rescue StandardError => e
       fail_state_with_error(e)
 
-      raise
+      raise unless suppress_errors?
+
+      failure(:exception, e, message: e.message)
     end
 
     private
+
+    def suppress_errors?
+      self.class.suppress_errors?
+    end
 
     def steps
       self.class.instance_variable_get('@steps')
