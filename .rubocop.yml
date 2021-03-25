@@ -5,7 +5,8 @@ AllCops:
     - 'bin/**/*'
     - 'lib/protobufs/**/*'
     - 'node_modules/**/*'
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
+  NewCops: enable
 
 require: rubocop-rails
 
@@ -62,7 +63,7 @@ Style/ConditionalAssignment:
   Enabled: false
 
 Style/MethodCallWithArgsParentheses:
-  Enabled: true
+  Enabled: false # TODO: disabled because of crash in the latest version
   IgnoredMethods:
     require
     require_relative
@@ -151,6 +152,9 @@ Lint/RaiseException:
 
 Lint/StructNewOverride:
   Enabled: true
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
 
 Rails/RakeEnvironment:
   Enabled: false

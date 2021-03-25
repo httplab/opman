@@ -79,7 +79,7 @@ module Op
 
     def self.check_operation_name(target_class, name)
       if name.blank?
-        err = 'Operation name must be specified for ' + target_class.name
+        err = "Operation name must be specified for #{target_class.name}"
         raise err
       end
 

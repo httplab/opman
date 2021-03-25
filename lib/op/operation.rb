@@ -4,10 +4,6 @@ module Op
   class Operation < Service
     attr_reader :state
 
-    def initialize(context)
-      super
-    end
-
     class << self
       def step(name, opts = {})
         steps << [name, opts.symbolize_keys]
