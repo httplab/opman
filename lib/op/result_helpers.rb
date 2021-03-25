@@ -12,7 +12,10 @@ module Op
       value_accessors = opts[:value_accessors]
       value_accessors ||= val.delete(:value_accessors) if val.is_a?(Hash)
 
-      Result.new(true, val, value_accessors: value_accessors)
+      result = Result.new(true)
+      result.value_accessors = value_accessors
+      result.value = val
+      result
     end
 
     def failure(error, val = nil, opts = {})
@@ -28,7 +31,8 @@ module Op
         value_accessors ||= val.delete(:value_accessors)
       end
 
-      result = Result.new(false, error, value_accessors: value_accessors)
+      result = Result.new(false, error)
+      result.value_accessors = value_accessors
       result.value = val
       result.message = message
       result

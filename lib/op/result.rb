@@ -10,14 +10,18 @@ module Op
     attr_reader :value
     attr_accessor :error
     attr_writer :message
+    attr_accessor :value_accessors
 
     # Arguments is a bit messy but we want to keep it for backward compatibility for a while.
     # Set value_accessors: true if you want to generate methods for keys in case if value is a hash.
     # It can be useful if you need to return more than one value with result, for example:
-    #   result = Op::Result.new(true, { user: 'John', email: 'john@example.org'  }, value_accessors: true)
+    #   result = Op::Result.new(true, user: 'John', email: 'john@example.org', value_accessors: true)
     #   result.user  # => John
     #   result.email # => john@example.org
-    def initialize(success, value_or_error = nil, value_accessors: false)
+    def initialize(success, value_or_error = nil)
+      value_accessors = false
+      value_accessors = value_or_error[:value_accessors] || false if value_or_error.is_a?(Hash)
+
       @value_accessors = value_accessors
       @success = success
 
@@ -76,6 +80,7 @@ module Op
           next
         end
 
+        next if str_key == 'value_accessors'
         next unless str_key =~ /^[a-z_]+[a-z0-9_]*$/
 
         # We don't want to override existing result methods, so we raise error in case

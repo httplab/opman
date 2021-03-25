@@ -10,3 +10,4 @@ gem 'rspec'
 gem 'rubocop', require: false
 gem 'rubocop-rails', require: false
 gem 'simplecov', require: false
+gem 'solargraph'
