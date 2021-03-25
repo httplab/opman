@@ -95,6 +95,9 @@ Style/MethodCallWithArgsParentheses:
     - 'Gemfile'
     - 'Capfile'
 
+Style/AccessorGrouping:
+  Enabled: false
+
 Metrics/AbcSize:
   Max: 40
 
