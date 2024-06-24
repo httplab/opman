@@ -1,21 +1,85 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
 AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+  DisplayStyleGuide: true
   Exclude:
     - 'db/schema.rb'
     - 'vendor/**/*'
     - 'bin/**/*'
-    - 'lib/protobufs/**/*'
     - 'node_modules/**/*'
-  TargetRubyVersion: 2.7
-  NewCops: enable
+    - 'spec/classic/**/*'
 
-require: rubocop-rails
+Bundler/OrderedGems:
+  Enabled: false
 
-Rails/UnknownEnv:
-  Environments:
-    - production
-    - staging
-    - development
-    - test
+Metrics/BlockLength:
+  Max: 100
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'lib/tasks/**/*.rake'
+    - 'config/routes/*.rb'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'config/routes/*.rb'
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 75
+  Exclude:
+    - 'config/routes/*.rb'
+
+Layout/LineLength:
+  Max: 140
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods: [ change ]
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Naming/InclusiveLanguage:
+  Enabled: false
+
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
 
 Style/AsciiComments:
   Enabled: false
@@ -23,13 +87,10 @@ Style/AsciiComments:
 Style/Documentation:
   Enabled: false
 
-Style/StringLiterals:
-  Enabled: false
-
-Style/BlockComments:
-  Enabled: false
-
 Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/HashEachMethods:
@@ -63,103 +124,57 @@ Style/ConditionalAssignment:
   Enabled: false
 
 Style/MethodCallWithArgsParentheses:
-  Enabled: false # TODO: disabled because of crash in the latest version
-  IgnoredMethods:
-    require
-    require_relative
-    info
-    logger_info
-    logger_warn
-    error
-    raise
-    puts
-    p
-    in?
-    is_a?
-    run
-    yield
-    return
-    render
-    redirect_to
-    respond_with
-    authorize
-    head
-    policy_scope
-    apply_scopes
-    raw
-    content_tag
+  Enabled: true
+  AllowedMethods:
+    - require
+    - require_relative
+    - info
+    - logger_info
+    - logger_warn
+    - error
+    - raise
+    - puts
+    - p
+    - in?
+    - is_a?
+    - run
+    - yield
+    - return
+    - render
+    - redirect_to
+    - respond_with
+    - authorize
+    - head
+    - policy_scope
+    - apply_scopes
+    - raw
+    - content_tag
+    - add_column
+    - add_index
+    - sleep
   Exclude:
     - 'spec/**/*.rb'
-    - 'test/**/*.rb'
     - 'db/migrate/*.rb'
     - 'config/**/*.rb'
     - 'Gemfile'
     - 'Capfile'
 
-Style/AccessorGrouping:
+Style/GuardClause:
   Enabled: false
 
-Metrics/AbcSize:
-  Max: 40
-
-Metrics/BlockLength:
-  Max: 100
-  Exclude:
-  - spec/**/*
-
-Metrics/ClassLength:
-  Max: 150
-
-Metrics/MethodLength:
-  Max: 50
-
-Layout/LineLength:
-  Max: 120
-
-Metrics/PerceivedComplexity:
+Style/IfUnlessModifier:
   Enabled: false
 
-Metrics/CyclomaticComplexity:
-  Max: 15
-
-Naming/MethodParameterName:
-  Enabled: false
-
-Layout/HashAlignment:
-  EnforcedLastArgumentHashStyle: always_ignore
-  EnforcedHashRocketStyle: key
-
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
-
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: false
-
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: false
-
-Layout/FirstArrayElementIndentation:
-  EnforcedStyle: consistent
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Lint/ConstantDefinitionInBlock:
+Rails/ApplicationController:
   Enabled: false
 
 Rails/RakeEnvironment:
   Enabled: false
 
 Rails/NotNullColumn:
+  Enabled: false
+
+Rails/Blank:
   Enabled: false
 
 Rails/BulkChangeTable:
@@ -171,5 +186,209 @@ Rails/ReversibleMigration:
 Rails/SkipsModelValidations:
   Enabled: false
 
-Style/RedundantFetchBlock:
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging
+    - development
+    - test
+
+Metrics/AbcSize:
+  Max: 75
+  Exclude:
+    - 'config/routes/*.rb'
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Lint/EmptyBlock:
   Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Rails/RenderInline:
+  Enabled: true
+
+Style/HashLikeCase:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/HashAlignment:
+  EnforcedLastArgumentHashStyle: always_ignore
+
+Lint/DuplicateBranch:
+  Enabled: true
+
+Lint/DuplicateRegexpCharacterClassElement:
+  Enabled: true
+
+Lint/EmptyClass:
+  Enabled: true
+
+Lint/NoReturnInBeginEndBlocks:
+  Enabled: true
+
+Lint/ToEnumArguments:
+  Enabled: true
+
+Lint/UnexpectedBlockArity:
+  Enabled: true
+
+Lint/UnmodifiedReduceAccumulator:
+  Enabled: true
+
+Style/ArgumentsForwarding:
+  Enabled: true
+
+Style/DocumentDynamicEvalDefinition:
+  Enabled: true
+
+Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NilLambda:
+  Enabled: true
+
+Style/RegexpLiteral:
+  Enabled: true
+  EnforcedStyle: mixed
+  # Unfortunatelly, AllowInnerSlashes doesn't work as expected and forces %r{} syntax when
+  # a regexp includes a slash. EnforceStyle mixed is ignored.
+  # AllowInnerSlashes: true
+
+Style/RedundantArgument:
+  Enabled: true
+
+Style/SwapValues:
+  Enabled: true
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: true
+  EnforcedShorthandSyntax: either
+
+Style/CaseLikeIf:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+Rails/ActiveRecordCallbacksOrder:
+  Enabled: true
+
+Rails/AttributeDefaultBlockValue:
+  Enabled: true
+
+Rails/FindById:
+  Enabled: true
+
+Rails/Inquiry:
+  Enabled: true
+
+Rails/MailerName:
+  Enabled: true
+
+Rails/MatchRoute:
+  Enabled: true
+
+Rails/Pluck:
+  Enabled: true
+
+Rails/RenderPlainText:
+  Enabled: true
+
+Rails/ShortI18n:
+  Enabled: true
+
+Rails/SquishedSQLHeredocs:
+  Enabled: true
+
+Rails/WhereEquals:
+  Enabled: true
+
+Rails/WhereExists:
+  Enabled: true
+
+Rails/FilePath:
+  Enabled: true
+
+RSpec/LetSetup:
+  Enabled: true
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+RSpec/MultipleExpectations:
+  Max: 10
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: true
+
+RSpec/VerifiedDoubles:
+  Enabled: true
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 20
+
+RSpec/NotToNot:
+  EnforcedStyle: to_not
+
+RSpec/MessageChain:
+  Enabled: true
+
+RSpec/StubbedMock:
+  Enabled: true
+
+Rails/WhereNotWithMultipleConditions:
+  Enabled: true
+
+Naming/VariableNumber:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/IndexedLet:
+  Enabled: true
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+Rails/ThreeStateBooleanColumn:
+  Enabled: true
+
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Style/FetchEnvVar:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false

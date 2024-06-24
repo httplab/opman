@@ -41,7 +41,7 @@ CREATE TABLE public.operation_states (
     error_kind character varying,
     error_text character varying,
     error_backtrace character varying,
-    finished_at timestamp without time zone,
+    finished_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -113,6 +113,5 @@ ALTER TABLE ONLY public.schema_migrations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20210325133516');
-
+('20240621135504');
 

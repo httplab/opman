@@ -6,11 +6,9 @@ module Op
     # and Op::Result.failure, it useful in tests.
     extend ResultHelpers
 
-    attr_reader :success
-    attr_reader :value
-    attr_accessor :error
+    attr_reader :success, :value
+    attr_accessor :error, :value_accessors
     attr_writer :message
-    attr_accessor :value_accessors
 
     # Arguments is a bit messy but we want to keep it for backward compatibility for a while.
     # Set value_accessors: true if you want to generate methods for keys in case if value is a hash.
@@ -70,7 +68,7 @@ module Op
 
       return unless value.is_a?(Hash)
 
-      value.each do |key, _|
+      value.each_key do |key|
         str_key = key.to_s
 
         # We don't need to generate method for existing accessor just set instance variable.

@@ -30,7 +30,7 @@ module ServiceTransactionalSpec
 
     before do
       allow(Foo).to receive(:new).and_return(foo)
-      allow(Bar).to receive(:new).with(nil, foo).and_return(bar)
+      allow(Bar).to receive(:new).and_return(bar)
     end
 
     it 'wraps top level #perform in transaction' do

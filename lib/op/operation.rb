@@ -21,9 +21,9 @@ module Op
         steps.each { |step| block.call(step[0], step[1]) }
       end
 
-      def call(context, *args, **kwargs)
+      def call(context, *, **)
         operation = new(context)
-        operation.call(*args, **kwargs)
+        operation.call(*, **)
       end
 
       private
@@ -45,7 +45,7 @@ module Op
         return result
       end
 
-      result = super(*args, **kwargs) if run_perform?
+      result = super if run_perform?
 
       if result.fail?
         fail_state_with_result(result)
@@ -156,14 +156,14 @@ module Op
       return unless @state
 
       @state.update!(state: 'failed', finished_at: Time.current, error_kind: :exception,
-                     error_text: err.message, error_backtrace: err.backtrace.join("\n"))
+        error_text: err.message, error_backtrace: err.backtrace.join("\n"))
     end
 
     def fail_state_with_result(result)
       return unless @state
 
       @state.update!(state: 'failed', finished_at: Time.current, error_kind: result.error.to_sym,
-                     error_text: result.message)
+        error_text: result.message)
     end
   end
 end

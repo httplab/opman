@@ -3,7 +3,7 @@
 module OperationOptionalPerformSpec
   describe 'Operation skip perform' do
     let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
-    let(:operation_context) { OperationContext.new(user) }
+    let(:operation_context) { OperationContext.new(user:) }
 
     def do_call
       operation.call

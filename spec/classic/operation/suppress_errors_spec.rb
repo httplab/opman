@@ -12,7 +12,7 @@ module OperationSuppressErrorsSpec
 
   describe 'supress errors' do
     let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
-    let(:operation_context) { OperationContext.new(user) }
+    let(:operation_context) { OperationContext.new(user: user) }
     let(:operation) { Foo.new(operation_context) }
 
     def do_call

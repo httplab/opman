@@ -7,6 +7,7 @@ class Winner < Op::Service
 
     def initialize(str)
       @custom_data = str
+
       super(true)
     end
   end
@@ -44,6 +45,6 @@ describe Looser do
     expect(result).to be_fail
     expect(result.error).to eq :not_found
     expect(result.message).to eq "Optional message about not found error"
-    expect(result.value).to eq 123
+    expect(result.value[0]).to eq 123
   end
 end

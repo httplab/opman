@@ -12,7 +12,7 @@ end
 
 describe 'Tracking Operation State' do
   let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
-  let(:operation_context) { OperationContext.new(user, emitter_type: 'user') }
+  let(:operation_context) { OperationContext.new(user:, emitter_type: 'user') }
   let(:operation) { Foo.new(operation_context) }
   let(:operation_state) { operation.state }
 

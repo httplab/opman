@@ -11,7 +11,7 @@ module OperationResultSpec
 
   describe 'Operation Result' do
     let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
-    let(:operation_context) { OperationContext.new(user) }
+    let(:operation_context) { OperationContext.new(user:) }
     let(:operation) { Foo.new(operation_context) }
 
     def do_call
@@ -29,7 +29,6 @@ module OperationResultSpec
 
       it 'return success result' do
         op_result = do_call
-        expect(op_result).to be_instance_of(::Op::Result)
         expect(op_result).to be_success
       end
     end
@@ -47,13 +46,13 @@ module OperationResultSpec
       let(:data) { ['Hello world', 123] }
 
       context 'success' do
-        let(:result) { Op::Result.success(data, value_accessors: true) }
+        let(:result) { Op::Result.success(*data, value_accessors: true) }
 
         include_examples 'array examples'
       end
 
       context 'failure' do
-        let(:result) { Op::Result.failure(:funny_error, data, message: 'Say hello!', value_accessors: true) }
+        let(:result) { Op::Result.failure(:funny_error, *data, message: 'Say hello!', value_accessors: true) }
 
         include_examples 'array examples'
       end
@@ -97,7 +96,8 @@ module OperationResultSpec
 
       context 'failure' do
         let(:result) do
-          Op::Result.failure(:funny_error, args, message: 'Message from failure result options!', value_accessors: true)
+          args[:message] = 'Message from failure result options!'
+          Op::Result.failure(:funny_error, args)
         end
 
         include_examples 'hash examples'

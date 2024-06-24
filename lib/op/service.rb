@@ -4,10 +4,9 @@ module Op
   class Service
     include ResultHelpers
 
-    OPERATION_NAME_REGEX = /^[a-z]+[a-z1-9_]+$/.freeze
+    OPERATION_NAME_REGEX = /^[a-z]+[a-z1-9_]+$/
 
-    attr_reader :context
-    attr_reader :parent
+    attr_reader :context, :parent
 
     class << self
       def operation_name(new_name = nil)
@@ -35,21 +34,21 @@ module Op
       @parent = parent
     end
 
-    def self.call(*args, **kwargs)
+    def self.call(*, **)
       service = new
-      service.call(*args, **kwargs)
+      service.call(*, **)
     end
 
-    def call(*args, **kwargs)
+    def call(*, **)
       if perform_in_transaction?
-        perform_in_transaction(*args, **kwargs)
+        perform_in_transaction(*, **)
       else
-        run_perform(*args, **kwargs)
+        run_perform(*, **)
       end
     end
 
-    def run_perform(*args, **kwargs)
-      ensure_result(perform(*args, **kwargs))
+    def run_perform(*, **)
+      ensure_result(perform(*, **))
     end
 
     def perform_in_transaction(*args, **kwargs)
@@ -85,8 +84,8 @@ module Op
 
       return if name =~ OPERATION_NAME_REGEX
 
-      err = "Operation name \"#{name}\" for \"#{target_class.name}\" must "\
-        "contain only alphanumeric and underscore letters"
+      err = "Operation name \"#{name}\" for \"#{target_class.name}\" must " \
+            "contain only alphanumeric and underscore letters"
       raise err
     end
 

@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.summary     = "Op is operations manager"
   spec.description = "Op is set of tools which help to organize business logic in a Rails application"
   spec.license     = "MIT"
-  spec.required_ruby_version = ">= 2.7"
+  spec.required_ruby_version = ">= 3.2"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -23,12 +23,12 @@ Gem::Specification.new do |spec|
     spec.metadata["allowed_push_host"] = "https://gems.httplab.ru"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
+          "public gem pushes."
   end
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency("rails", ">= 5.2.1")
+  spec.add_dependency("rails", ">= 7")
 
-  spec.add_development_dependency("pg")
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end
