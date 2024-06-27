@@ -10,7 +10,7 @@ module OperationSuppressErrorsSpec
     end
   end
 
-  describe 'supress errors' do
+  describe 'suppress errors' do
     let(:user) { OpenStruct.new(id: 42, email: 'john.doe@foobar.com') }
     let(:operation_context) { OperationContext.new(user: user) }
     let(:operation) { Foo.new(operation_context) }
@@ -19,7 +19,7 @@ module OperationSuppressErrorsSpec
       operation.call
     end
 
-    it 'supresses an exception and returns failure' do
+    it 'suppresses an exception and returns failure' do
       # @type [Op::Result]
       result = nil
 

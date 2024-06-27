@@ -1,9 +1,11 @@
+require_relative 'inheritable_property'
 require_relative 'context'
 require_relative 'result'
 require_relative 'after_hooks'
 require_relative 'legacy'
 
 class Op::Lite::Service
+  include Op::Lite::InheritableProperty
   include Op::Lite::ResultHelpers
   include Op::Lite::AfterHooks
   include Op::Lite::Legacy
@@ -12,19 +14,19 @@ class Op::Lite::Service
 
   class << self
     def transactional
-      @transactional = true
+      inheritable_property_set(:transactional, true)
     end
 
     def transactional?
-      @transactional
+      !!inheritable_property_get(:transactional)
     end
 
     def suppress_errors
-      @suppress_errors = true
+      inheritable_property_set(:suppress_errors, true)
     end
 
     def suppress_errors?
-      @suppress_errors
+      !!inheritable_property_get(:suppress_errors)
     end
 
     def call(*, **)
