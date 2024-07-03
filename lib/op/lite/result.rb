@@ -74,14 +74,15 @@ end
 # passed to the failure result.
 class Op::Lite::FailureException < StandardError
   def initialize(failure)
-    @cause = failure.cause
-
     super(failure.message)
+
+    @cause = failure.cause
+    set_backtrace(@cause&.backtrace)
   end
 
-  def cause
-    @cause || super
-  end
+  def cause = @cause || super
+
+  def backtrace_locations = @cause&.backtrace_locations || super
 end
 
 # Op::Lite::Failure is a class which represents a failure result of the operation. It pretends to be
