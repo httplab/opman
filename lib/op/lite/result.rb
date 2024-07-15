@@ -67,6 +67,10 @@ class Op::Lite::Success < Op::Lite::Result
   def initialize(value = nil)
     @value = value
   end
+
+  def deconstruct
+    [:success, value].compact
+  end
 end
 
 # Op::Lite::FailureException is a wrapper for Op::Lite::Failure which allows to raise failure as an
@@ -149,5 +153,9 @@ class Op::Lite::Failure < Op::Lite::Result
     str = "Op::Failure"
     str += " (#{cause.class.name})" if cause
     str + ": #{message.strip}"
+  end
+
+  def deconstruct
+    [error, value].compact
   end
 end
