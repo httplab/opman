@@ -76,7 +76,7 @@ class Op::Lite::Service
   def ensure_result(result)
     return result if result.is_a?(Op::Lite::Result)
 
-    success
+    success(result)
   end
 
   def suppress_errors? = self.class.suppress_errors?
