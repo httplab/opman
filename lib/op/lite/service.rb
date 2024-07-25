@@ -46,7 +46,7 @@ class Op::Lite::Service
       if perform_in_transaction?
         perform_in_transaction(...)
       else
-        perform(...)
+        run_perform(...)
       end
 
     hooks_result = run_after_hooks(result)
@@ -69,7 +69,7 @@ class Op::Lite::Service
 
   def perform_in_transaction(...)
     result = nil
-    ActiveRecord::Base.transaction { result = perform(...) }
+    ActiveRecord::Base.transaction { result = run_perform(...) }
     result
   end
 
@@ -80,6 +80,10 @@ class Op::Lite::Service
   end
 
   def suppress_errors? = self.class.suppress_errors?
+
+  # We need this function to override and run before/after perform actions in case of
+  # building services hierarchy.
+  def run_perform(...) = perform(...)
 
   def perform(*, **)
     raise NotImplementedError
